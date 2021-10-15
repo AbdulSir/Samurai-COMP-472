@@ -1,0 +1,17 @@
+COMP 472 - Mini Project 1 - Fall 2021
+Due October 18th, 2021
+Team Samurai: Adrien Kamran (40095393), Abdul Sirawan (?)
+
+Out of all 6 classification models, only one of them was shown to have a standard deviation of any significant magnitude.
+Specifically, the Base-MLP model has a standard deviation in the e-3 range for all 3 of its measured
+standard deviation statistics across 10 runs. All 5 other models have standard deviations at a range of e-16 or smaller
+(or even 0).
+
+Otherwise, in terms of the average statistics, here are the models from best to worst, consistently:
+Top-DT = Base-DT > NB > Top-MLP > Base-MLP > PER
+Given the dataset, the use of a Decision Tree model is the strongest choice, both in terms of high average statistics
+and of low standard deviation statistics. What's especially interesting is how little the use of an exhaustive grid
+search on the hyper-parameters improved the results for this model. This could be due to the already VERY high strength
+of the default hyper-parameters in relation to this dataset. However, we can see a significant improvement of all
+statistics when using the exhaustive grid search on the hyper-parameters of the Multi-Level Perceptron model. The only
+catch is that, even with this improvement, it's still a weaker model compared to the Decision Tree model.
