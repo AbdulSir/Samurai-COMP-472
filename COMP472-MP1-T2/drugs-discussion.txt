@@ -1,6 +1,6 @@
 COMP 472 - Mini Project 1 - Fall 2021
 Due October 18th, 2021
-Team Samurai: Adrien Kamran (40095393), Abdul Sirawan (?)
+Team Samurai: Adrien Kamran, Abdul Sirawan
 
 Out of all 6 classification models, only one of them was shown to have a standard deviation of any significant magnitude.
 Specifically, the Base-MLP model has a standard deviation in the e-3 range for all 3 of its measured
