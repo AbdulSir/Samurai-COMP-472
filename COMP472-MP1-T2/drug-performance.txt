@@ -1,0 +1,242 @@
+** FILE CREATED: 2021-10-16 20:15:02.258175 **
+
+a)
+*****************************************************************************
+GAUSSIAN NAIVE BAYES
+
+b)
+Confusion Matrix:
+ [[ 6  0  0  0  0]
+ [ 0  4  0  0  0]
+ [ 0  0  2  0  0]
+ [ 0  0  0 14  1]
+ [ 5  0  2  0 16]]
+c)
+Precision:
+ [[ 6  0  0  0  0]
+ [ 0  4  0  0  0]
+ [ 0  0  2  0  0]
+ [ 0  0  0 14  1]
+ [ 5  0  2  0 16]] 
+Recall:
+ [1.         1.         1.         0.93333333 0.69565217] 
+F1-measure:
+ [0.70588235 1.         0.66666667 0.96551724 0.8       ]
+d)
+Accuracy:
+ 0.84 
+Macro-average F1-measure:
+ 0.8276132521974308 
+Weighted-average F1-measure:
+ 0.8490277214334009 
+
+a)
+*****************************************************************************
+BASE DECISION TREE
+
+b)
+Confusion Matrix:
+ [[ 6  0  0  0  0]
+ [ 0  4  0  0  0]
+ [ 0  0  2  0  0]
+ [ 0  0  0 14  1]
+ [ 0  0  0  0 23]]
+c)
+Precision:
+ [[ 6  0  0  0  0]
+ [ 0  4  0  0  0]
+ [ 0  0  2  0  0]
+ [ 0  0  0 14  1]
+ [ 0  0  0  0 23]] 
+Recall:
+ [1.         1.         1.         0.93333333 1.        ] 
+F1-measure:
+ [1.         1.         1.         0.96551724 0.9787234 ]
+d)
+Accuracy:
+ 0.98 
+Macro-average F1-measure:
+ 0.988848129126926 
+Weighted-average F1-measure:
+ 0.97986793837124 
+
+a)
+*****************************************************************************
+TOP DECISION TREE
+Best hyper-parameters: {'criterion': 'entropy', 'max_depth': 4, 'min_samples_split': 3} 
+
+b)
+Confusion Matrix:
+ [[ 6  0  0  0  0]
+ [ 0  4  0  0  0]
+ [ 0  0  2  0  0]
+ [ 0  0  0 14  1]
+ [ 0  0  0  0 23]]
+c)
+Precision:
+ [[ 6  0  0  0  0]
+ [ 0  4  0  0  0]
+ [ 0  0  2  0  0]
+ [ 0  0  0 14  1]
+ [ 0  0  0  0 23]] 
+Recall:
+ [1.         1.         1.         0.93333333 1.        ] 
+F1-measure:
+ [1.         1.         1.         0.96551724 0.9787234 ]
+d)
+Accuracy:
+ 0.98 
+Macro-average F1-measure:
+ 0.988848129126926 
+Weighted-average F1-measure:
+ 0.97986793837124 
+
+a)
+*****************************************************************************
+PERCEPTRON
+
+b)
+Confusion Matrix:
+ [[ 1  0  0  2  3]
+ [ 0  0  0  4  0]
+ [ 0  0  0  0  2]
+ [ 0  0  0  9  6]
+ [ 0  0  0  2 21]]
+c)
+Precision:
+ [[ 1  0  0  2  3]
+ [ 0  0  0  4  0]
+ [ 0  0  0  0  2]
+ [ 0  0  0  9  6]
+ [ 0  0  0  2 21]] 
+Recall:
+ [0.16666667 0.         0.         0.6        0.91304348] 
+F1-measure:
+ [0.28571429 0.         0.         0.5625     0.76363636]
+d)
+Accuracy:
+ 0.62 
+Macro-average F1-measure:
+ 0.32237012987012986 
+Weighted-average F1-measure:
+ 0.5543084415584414 
+
+a)
+*****************************************************************************
+BASE MULTI-LAYERED PERCEPTRON
+
+b)
+Confusion Matrix:
+ [[ 0  0  0  1  5]
+ [ 0  0  0  4  0]
+ [ 0  0  0  0  2]
+ [ 0  0  0  6  9]
+ [ 0  0  0  1 22]]
+c)
+Precision:
+ [[ 0  0  0  1  5]
+ [ 0  0  0  4  0]
+ [ 0  0  0  0  2]
+ [ 0  0  0  6  9]
+ [ 0  0  0  1 22]] 
+Recall:
+ [0.         0.         0.         0.4        0.95652174] 
+F1-measure:
+ [0.         0.         0.         0.44444444 0.72131148]
+d)
+Accuracy:
+ 0.56 
+Macro-average F1-measure:
+ 0.23315118397085607 
+Weighted-average F1-measure:
+ 0.46513661202185796 
+
+a)
+*****************************************************************************
+TOP MULTI-LAYERED PERCEPTRON
+Best hyper-parameters: {'activation': 'tanh', 'hidden_layer_sizes': (30, 50), 'solver': 'adam'} 
+
+b)
+Confusion Matrix:
+ [[ 6  0  0  0  0]
+ [ 1  3  0  0  0]
+ [ 0  0  1  1  0]
+ [ 0  0  0 15  0]
+ [ 2  0  0  0 21]]
+c)
+Precision:
+ [[ 6  0  0  0  0]
+ [ 1  3  0  0  0]
+ [ 0  0  1  1  0]
+ [ 0  0  0 15  0]
+ [ 2  0  0  0 21]] 
+Recall:
+ [1.         0.75       0.5        1.         0.91304348] 
+F1-measure:
+ [0.8        0.85714286 0.66666667 0.96774194 0.95454545]
+d)
+Accuracy:
+ 0.92 
+Macro-average F1-measure:
+ 0.8492193827677698 
+Weighted-average F1-measure:
+ 0.9206515849741657 
+
+
+*****************************************************************************
+STATISTICS
+
+
+NB STATS:
+Average accuracy: 0.84 
+Average macro-average f1: 0.8276132521974308 
+Average weighted-average f1: 0.8490277214334009 
+Standard deviation accuracy: 1.1102230246251565e-16 
+Standard deviation macro-average f1: 0.0 
+Standard deviation weighted-average f1: 0.0 
+
+
+BASE-DT STATS:
+Average accuracy: 0.98 
+Average macro-average f1: 0.988848129126926 
+Average weighted-average f1: 0.97986793837124 
+Standard deviation accuracy: 1.1102230246251565e-16 
+Standard deviation macro-average f1: 2.220446049250313e-16 
+Standard deviation weighted-average f1: 2.220446049250313e-16 
+
+
+TOP-DT STATS:
+Average accuracy: 0.98 
+Average macro-average f1: 0.988848129126926 
+Average weighted-average f1: 0.97986793837124 
+Standard deviation accuracy: 1.1102230246251565e-16 
+Standard deviation macro-average f1: 2.220446049250313e-16 
+Standard deviation weighted-average f1: 2.220446049250313e-16 
+
+
+PER STATS:
+Average accuracy: 0.62 
+Average macro-average f1: 0.32237012987012986 
+Average weighted-average f1: 0.5543084415584414 
+Standard deviation accuracy: 0.0 
+Standard deviation macro-average f1: 5.551115123125783e-17 
+Standard deviation weighted-average f1: 5.551115123125783e-17 
+
+
+BASE-MLP STATS:
+Average accuracy: 0.572 
+Average macro-average f1: 0.24066328582986435 
+Average weighted-average f1: 0.47769649757962823 
+Standard deviation accuracy: 0.009797958971132666 
+Standard deviation macro-average f1: 0.00637126829739399 
+Standard deviation weighted-average f1: 0.00637126829739399 
+
+
+TOP-MLP STATS:
+Average accuracy: 0.92 
+Average macro-average f1: 0.8492193827677698 
+Average weighted-average f1: 0.9206515849741657 
+Standard deviation accuracy: 1.1102230246251565e-16 
+Standard deviation macro-average f1: 0.0 
+Standard deviation weighted-average f1: 0.0 
+
