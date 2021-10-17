@@ -1,6 +1,6 @@
 # Samurai-COMP-472
 
-<h1> Instructions to Run Task 2 </h1>
+<h1> Instructions to Run Task 1 </h1>
 
 <ul> 
   <li>Open Jupyter Notebook and open Task1.ipynb file </li>
