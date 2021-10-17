@@ -1,8 +1,8 @@
 https://github.com/AdrienKamran/Samurai-COMP-472
 # Samurai-COMP-472
 
-<h1> Instructions to Run Task 1 </h1>
-
+<h1> Mini-Project 1 </h1>
+<h2> Instructions to Run Task 1 </h2>
 <ul> 
   <li>Enter the COMP472-MP1-T1 directory</li>
   <li>Open Jupyter Notebook and open Task1.ipynb file </li>
@@ -10,8 +10,7 @@ https://github.com/AdrienKamran/Samurai-COMP-472
   <li>Run the cells in the Task1.ipynb file</li>
 </ul>
 
-<h1> Instructions to Run Task 2 </h1>
-
+<h2> Instructions to Run Task 2 </h2>
 <ul>
   <li>Enter the COMP472-MP1-T2 directory</li>
   <li>Launch Jupyter Notebook (or a supported IDE, such as DataSpell) and open task2.ipynb file</li>
