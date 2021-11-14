@@ -61,8 +61,10 @@ class Game_Parameter:
 
         print(line_up_size)
 
-        threshold = input("\nPlease enter the maximum allowed time (in seconds) for the program to return a move:\n")
-        threshold = int(threshold)
+        self.max_depth_d1 = int(input("\nPlease enter the maximum depth of the adversarial search for player 1:\n"))
+        self.max_depth_d2 = int(input("\nPlease enter the maximum depth of the adversarial search for player 2:\n"))
+
+        self.threshold = int(input("\nPlease enter the maximum allowed time (in seconds) for the program to return a move:\n"))
 
         search_algo = input("\nPlease enter the desired search algorithm (minimax OR alphabeta):\n")
         while (search_algo.lower() != "minimax") and (search_algo.lower() != "alphabeta"):
