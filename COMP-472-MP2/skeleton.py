@@ -11,7 +11,8 @@ class Game:
 	def __init__(self, recommend = True):
 		self.initialize_game()
 		self.recommend = recommend
-		
+
+	#Takes in board size and blocs	
 	def initialize_game(self):
 		self.current_state = [['.','.','.'],
 							  ['.','.','.'],
