@@ -1,8 +1,8 @@
-from skeleton import Game
+#from skeleton import Game
 import string
 
 class Game_Parameter:
-#Variable setup
+    #Variable setup
     size_of_board = num_of_blocs = position_of_blocs = line_up_size = max_depth_d1 = max_depth_d2 = threshold = 0
     blocs_x_coord = blocs_y_coord = 0
     blocs_coordinates = []
@@ -51,15 +51,15 @@ class Game_Parameter:
 
         print (self.blocs_coordinates)
 
-        line_up_size = input("\nPlease enter the winning line-up size 3-" + str(self.size_of_board) + ":\n")
-        line_up_size = int(line_up_size)
+        self.line_up_size = input("\nPlease enter the winning line-up size 3-" + str(self.size_of_board) + ":\n")
+        self.line_up_size = int(self.line_up_size)
 
-        while (line_up_size < 3) or (line_up_size > self.size_of_board):
+        while (self.line_up_size < 3) or (self.line_up_size > self.size_of_board):
             print("Invalid input")
-            line_up_size = input("Please enter the winning line-up size 3-" + str(self.size_of_board) + ":\n")
-            line_up_size = int(line_up_size)
+            self.line_up_size = input("Please enter the winning line-up size 3-" + str(self.size_of_board) + ":\n")
+            self.line_up_size = int(self.line_up_size)
 
-        print(line_up_size)
+        print(self.line_up_size)
 
         self.max_depth_d1 = int(input("\nPlease enter the maximum depth of the adversarial search for player 1:\n"))
         self.max_depth_d2 = int(input("\nPlease enter the maximum depth of the adversarial search for player 2:\n"))
@@ -72,9 +72,9 @@ class Game_Parameter:
             search_algo = input("\nPlease enter the desired search algorithm (minimax OR alphabeta):\n")
 
         if search_algo == 'minimax':
-            minimax_alphabeta_bool = False
+            minimax_alphabeta_bool = 0
         else:
-            minimax_alphabeta_bool = True
+            minimax_alphabeta_bool = 1
 
         print (minimax_alphabeta_bool)
 

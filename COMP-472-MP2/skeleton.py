@@ -1,32 +1,56 @@
 # based on code from https://stackabuse.com/minimax-and-alpha-beta-pruning-in-python
-
+from section2 import Game_Parameter
 import time
+import string
 
 class Game:
 	MINIMAX = 0
 	ALPHABETA = 1
 	HUMAN = 2
 	AI = 3
+	current_state = []
+	gp = Game_Parameter()
 	
 	def __init__(self, recommend = True):
 		self.initialize_game()
 		self.recommend = recommend
 
+	def mode_of_play(self):
+		if self.gp.play_modes.lower() == "h-h":
+			return [2,2]
+		elif self.gp.play_modes.lower() == "ai-ai":
+			return [3,3]
+		elif self.gp.play_modes.lower() == "h-ai":
+			return [2,3]
+		elif self.gp.play_modes.lower() == "ai-h":
+			return [3,2]
+
 	#Takes in board size and blocs	
 	def initialize_game(self):
-		self.current_state = [['.','.','.'],
-							  ['.','.','.'],
-							  ['.','.','.']]
-		# Player X always plays first
 		self.player_turn = 'X'
+		for i in range(self.gp.size_of_board):
+			row = []
+			for j in range(self.gp.size_of_board):
+				row.append('.')
+			self.current_state.append(row)
+		for k, z, in enumerate(self.gp.blocs_coordinates):
+			x = z[0]
+			y = z[1]
+			self.current_state[x][y] = '*'
 
 	def draw_board(self):
-		print()
-		for y in range(0, 3):
-			for x in range(0, 3):
-				print(F'{self.current_state[x][y]}', end="")
-			print()
-		print()
+		formatted_list = ' '
+		for i in range(self.gp.size_of_board):
+			formatted_list += ' ' + string.ascii_uppercase[i]
+		row_index = 0
+		for i in self.current_state:
+			formatted_list += '\n' + str(row_index) + '|'
+			col_index = 0
+			row_index += 1
+			for j in i:
+				formatted_list += j + ' '
+				col_index += 1
+		print(formatted_list)
 		
 	def is_valid(self, px, py):
 		if px < 0 or px > 2 or py < 0 or py > 2:
@@ -37,31 +61,73 @@ class Game:
 			return True
 
 	def is_end(self):
-		# Vertical win
-		for i in range(0, 3):
-			if (self.current_state[0][i] != '.' and
-				self.current_state[0][i] == self.current_state[1][i] and
-				self.current_state[1][i] == self.current_state[2][i]):
-				return self.current_state[0][i]
+		# Vertical win	
+		for i in range(self.gp.size_of_board):
+			vertical_X_flag = []
+			vertical_O_flag = []
+			for j in range(self.gp.size_of_board):
+				if (self.current_state[j][i] != '.' and
+					self.current_state[j][i] != '*' and
+					self.current_state[j][i] != 'O'):
+					vertical_X_flag.append(self.current_state[j][i])
+					if len(vertical_X_flag) == self.gp.line_up_size:
+						return 'X'
+				elif (self.current_state[j][i] != '.' and
+					self.current_state[j][i] != '*' and
+					self.current_state[j][i] != 'X'):
+					vertical_O_flag.append(self.current_state[j][i])
+					if len(vertical_O_flag) == self.gp.line_up_size:
+						return 'O'
+					
 		# Horizontal win
-		for i in range(0, 3):
-			if (self.current_state[i] == ['X', 'X', 'X']):
-				return 'X'
-			elif (self.current_state[i] == ['O', 'O', 'O']):
-				return 'O'
-		# Main diagonal win
-		if (self.current_state[0][0] != '.' and
-			self.current_state[0][0] == self.current_state[1][1] and
-			self.current_state[0][0] == self.current_state[2][2]):
-			return self.current_state[0][0]
-		# Second diagonal win
-		if (self.current_state[0][2] != '.' and
-			self.current_state[0][2] == self.current_state[1][1] and
-			self.current_state[0][2] == self.current_state[2][0]):
-			return self.current_state[0][2]
+		for i in range(self.gp.size_of_board):
+			horizontal_X_flag = []
+			horizontal_O_flag = []
+			for j in range(self.gp.size_of_board):
+				if (self.current_state[i][j] != '.' and
+					self.current_state[i][j] != '*' and
+					self.current_state[i][j] != 'O'):
+					horizontal_X_flag.append(self.current_state[j][i])
+					if len(horizontal_X_flag) == self.gp.line_up_size:
+						return 'X'
+				elif (self.current_state[i][j] != '.' and
+					self.current_state[i][j] != '*' and
+					self.current_state[i][j] != 'X'):
+					horizontal_O_flag.append(self.current_state[j][i])
+					if len(horizontal_O_flag) == self.gp.line_up_size:
+						return 'O'
+
+		# Diagonal win
+		Diagonal_X_flag = Diagonal_O_flag = Diagonal_1_X_flag = Diagonal_1_O_flag = 0
+		for i in range(self.gp.size_of_board):
+			for j in range(self.gp.size_of_board):
+				if (i <= self.gp.size_of_board - self.gp.line_up_size and j <= self.gp.size_of_board - self.gp.line_up_size):
+					for k in range(self.gp.line_up_size):
+						if (self.current_state[i+k][j+k] == 'X'):
+							Diagonal_X_flag += 1
+						elif (self.current_state[i+k][j+k] == 'O'):
+							Diagonal_O_flag += 1
+					if Diagonal_X_flag == self.gp.line_up_size:
+						return 'X'
+					elif Diagonal_O_flag == self.gp.line_up_size:
+						return 'O'
+					Diagonal_X_flag = Diagonal_O_flag = 0
+				
+				if (i <= self.gp.size_of_board - self.gp.line_up_size and j >= self.gp.line_up_size -1):
+					for k in range(self.gp.line_up_size):
+						if (self.current_state[i+k][j-k] == 'X'):
+							Diagonal_1_X_flag += 1
+						elif (self.current_state[i+k][j-k] == 'O'):
+							Diagonal_1_O_flag += 1
+					if Diagonal_1_X_flag == self.gp.line_up_size:
+						return 'X'
+					elif Diagonal_1_O_flag == self.gp.line_up_size:
+						return 'O'
+					Diagonal_1_X_flag = Diagonal_1_O_flag = 0	
+
 		# Is whole board full?
-		for i in range(0, 3):
-			for j in range(0, 3):
+		for i in range(self.gp.size_of_board):
+			for j in range(self.gp.size_of_board):
 				# There's an empty field, we continue the game
 				if (self.current_state[i][j] == '.'):
 					return None
@@ -82,15 +148,23 @@ class Game:
 		return self.result
 
 	def input_move(self):
-		while True:
-			print(F'Player {self.player_turn}, enter your move:')
-			px = int(input('enter the x coordinate: '))
-			py = int(input('enter the y coordinate: '))
-			if self.is_valid(px, py):
-				return (px,py)
-			else:
-				print('The move is not valid! Try again.')
+		list_of_chars = [string.ascii_uppercase[i] for i in range(self.gp.size_of_board)]
+		column_selected = input("Please indicate the column [A-" + string.ascii_uppercase[self.gp.size_of_board -1] + "]:\n")
+		while column_selected not in list_of_chars:
+			print("Invalid input")
+			column_selected = input("Please indicate the column [A-" + string.ascii_uppercase[self.gp.size_of_board - 1] + "]:\n")
+		for i in range(len(list_of_chars)):
+			if column_selected == list_of_chars[i]:
+				column_selected = str(i)
 
+		row_selected = int(input("Please indicate the row [0-" + str(self.gp.size_of_board -1) + "]:\n"))
+		while row_selected not in [i for i in range(self.gp.size_of_board)]:
+			print("Invalid input")
+			row_selected = int(input("Please indicate the row [0-" + str(self.gp.size_of_board -1) + "]:\n"))
+		
+		return (int(column_selected),row_selected)
+
+	#no need for modification
 	def switch_player(self):
 		if self.player_turn == 'X':
 			self.player_turn = 'O'
@@ -98,6 +172,7 @@ class Game:
 			self.player_turn = 'X'
 		return self.player_turn
 
+	#Didn't touch this yet
 	def minimax(self, max=False):
 		# Minimizing for 'X' and maximizing for 'O'
 		# Possible values are:
@@ -186,19 +261,13 @@ class Game:
 							beta = value
 		return (value, x, y)
 
-	def play(self,algo=None,player_x=None,player_o=None):
-		if algo == None:
-			algo = self.ALPHABETA
-		if player_x == None:
-			player_x = self.HUMAN
-		if player_o == None:
-			player_o = self.HUMAN
+	def play(self):
 		while True:
 			self.draw_board()
 			if self.check_end():
 				return
 			start = time.time()
-			if algo == self.MINIMAX:
+			if self.gp.minimax_alphabeta_bool == self.MINIMAX:
 				if self.player_turn == 'X':
 					(_, x, y) = self.minimax(max=False)
 				else:
@@ -209,12 +278,12 @@ class Game:
 				else:
 					(m, x, y) = self.alphabeta(max=True)
 			end = time.time()
-			if (self.player_turn == 'X' and player_x == self.HUMAN) or (self.player_turn == 'O' and player_o == self.HUMAN):
+			if (self.player_turn == 'X' and self.mode_of_play()[0] == self.HUMAN) or (self.player_turn == 'O' and self.mode_of_play()[1] == self.HUMAN):
 					if self.recommend:
 						print(F'Evaluation time: {round(end - start, 7)}s')
 						print(F'Recommended move: x = {x}, y = {y}')
 					(x,y) = self.input_move()
-			if (self.player_turn == 'X' and player_x == self.AI) or (self.player_turn == 'O' and player_o == self.AI):
+			if (self.player_turn == 'X' and self.mode_of_play()[0] == self.AI) or (self.player_turn == 'O' and self.mode_of_play()[1] == self.AI):
 						print(F'Evaluation time: {round(end - start, 7)}s')
 						print(F'Player {self.player_turn} under AI control plays: x = {x}, y = {y}')
 			self.current_state[x][y] = self.player_turn
