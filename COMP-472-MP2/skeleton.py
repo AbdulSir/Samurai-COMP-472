@@ -10,6 +10,8 @@ class Game:
 	AI = 3
 	current_state = []
 	gp = Game_Parameter()
+	d1 = gp.max_depth_d1
+	d2 = gp.max_depth_d2
 	
 	def __init__(self, recommend = True):
 		self.initialize_game()
@@ -51,14 +53,6 @@ class Game:
 				formatted_list += j + ' '
 				col_index += 1
 		print(formatted_list)
-		
-	def is_valid(self, px, py):
-		if px < 0 or px > 2 or py < 0 or py > 2:
-			return False
-		elif self.current_state[px][py] != '.':
-			return False
-		else:
-			return True
 
 	def is_end(self):
 		# Vertical win	
@@ -174,12 +168,20 @@ class Game:
 
 	#Didn't touch this yet
 	def minimax(self, max=False):
+		
+		# end = time.time()
+		# if max and (end - self.start) > self.gp.threshold:
+		# 	return (-1, None, None)
+		# elif max==False and (end - self.start) > self.gp.threshold:
+		# 	return (1, None, None)
+
 		# Minimizing for 'X' and maximizing for 'O'
 		# Possible values are:
 		# -1 - win for 'X'
 		# 0  - a tie
 		# 1  - loss for 'X'
 		# We're initially setting it to 2 or -2 as worse than the worst case:
+
 		value = 2
 		if max:
 			value = -2
@@ -192,9 +194,10 @@ class Game:
 			return (1, x, y)
 		elif result == '.':
 			return (0, x, y)
-		for i in range(0, 3):
-			for j in range(0, 3):
+		for i in range(3):
+			for j in range(3):
 				if self.current_state[i][j] == '.':
+					#if max and self.d1 > 0:
 					if max:
 						self.current_state[i][j] = 'O'
 						(v, _, _) = self.minimax(max=False)
@@ -202,6 +205,7 @@ class Game:
 							value = v
 							x = i
 							y = j
+					#elif max == False and self.d2 > 0:
 					else:
 						self.current_state[i][j] = 'X'
 						(v, _, _) = self.minimax(max=True)
@@ -266,7 +270,7 @@ class Game:
 			self.draw_board()
 			if self.check_end():
 				return
-			start = time.time()
+			self.start = time.time()
 			if self.gp.minimax_alphabeta_bool == self.MINIMAX:
 				if self.player_turn == 'X':
 					(_, x, y) = self.minimax(max=False)
@@ -280,11 +284,11 @@ class Game:
 			end = time.time()
 			if (self.player_turn == 'X' and self.mode_of_play()[0] == self.HUMAN) or (self.player_turn == 'O' and self.mode_of_play()[1] == self.HUMAN):
 					if self.recommend:
-						print(F'Evaluation time: {round(end - start, 7)}s')
+						print(F'Evaluation time: {round(end - self.start, 7)}s')
 						print(F'Recommended move: x = {x}, y = {y}')
 					(x,y) = self.input_move()
 			if (self.player_turn == 'X' and self.mode_of_play()[0] == self.AI) or (self.player_turn == 'O' and self.mode_of_play()[1] == self.AI):
-						print(F'Evaluation time: {round(end - start, 7)}s')
+						print(F'Evaluation time: {round(end - self.start, 7)}s')
 						print(F'Player {self.player_turn} under AI control plays: x = {x}, y = {y}')
 			self.current_state[x][y] = self.player_turn
 			self.switch_player()
