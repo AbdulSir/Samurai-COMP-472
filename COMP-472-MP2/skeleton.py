@@ -194,8 +194,8 @@ class Game:
 			return (1, x, y)
 		elif result == '.':
 			return (0, x, y)
-		for i in range(3):
-			for j in range(3):
+		for i in range(self.gp.size_of_board):
+			for j in range(self.gp.size_of_board):
 				if self.current_state[i][j] == '.':
 					#if max and self.d1 > 0:
 					if max:
