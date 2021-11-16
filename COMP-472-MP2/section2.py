@@ -127,16 +127,3 @@ class Game_Parameter:
                 row_selected = int(input("Please indicate the row [0-" + str(self.size_of_board -1) + "]:\n"))
             
             return column_selected + str(row_selected)
-
-
-
-
-            
-
-# Coordinates of Moves: If at least one player is a human, then their moves will be specified by first
-# indicating the column (numbered [A..J]), then the row (numbered [0..(n-1)]), for example B 3. Note
-# that if a human player enters an illegal move (e.g. W 3 or the coordinates of a position that is not empty),
-# then they will only be warned and be given a chance to enter another move with no penalty3
-# . However, if
-# your program generates an illegal move, then it will automatically lose the game.
-

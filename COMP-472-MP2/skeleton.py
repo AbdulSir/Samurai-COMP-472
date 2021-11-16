@@ -12,6 +12,9 @@ class Game:
 	gp = Game_Parameter()
 	d1 = gp.max_depth_d1
 	d2 = gp.max_depth_d2
+	current_depth_max = 0 #the current depth of the recursion
+	current_depth_min = 0
+	nb_of_evaluated_states = 0
 	
 	def __init__(self, recommend = True):
 		self.initialize_game()
@@ -52,7 +55,7 @@ class Game:
 			for j in i:
 				formatted_list += j + ' '
 				col_index += 1
-		print(formatted_list)
+		return formatted_list
 
 	def is_end(self):
 		# Vertical win	
@@ -92,32 +95,32 @@ class Game:
 						return 'O'
 
 		# Diagonal win
-		Diagonal_X_flag = Diagonal_O_flag = Diagonal_1_X_flag = Diagonal_1_O_flag = 0
+		diagonal_X_flag = diagonal_O_flag = diagonal_1_X_flag = diagonal_1_O_flag = 0
 		for i in range(self.gp.size_of_board):
 			for j in range(self.gp.size_of_board):
 				if (i <= self.gp.size_of_board - self.gp.line_up_size and j <= self.gp.size_of_board - self.gp.line_up_size):
 					for k in range(self.gp.line_up_size):
 						if (self.current_state[i+k][j+k] == 'X'):
-							Diagonal_X_flag += 1
+							diagonal_X_flag += 1
 						elif (self.current_state[i+k][j+k] == 'O'):
-							Diagonal_O_flag += 1
-					if Diagonal_X_flag == self.gp.line_up_size:
+							diagonal_O_flag += 1
+					if diagonal_X_flag == self.gp.line_up_size:
 						return 'X'
-					elif Diagonal_O_flag == self.gp.line_up_size:
+					elif diagonal_O_flag == self.gp.line_up_size:
 						return 'O'
-					Diagonal_X_flag = Diagonal_O_flag = 0
+					diagonal_X_flag = diagonal_O_flag = 0
 				
 				if (i <= self.gp.size_of_board - self.gp.line_up_size and j >= self.gp.line_up_size -1):
 					for k in range(self.gp.line_up_size):
 						if (self.current_state[i+k][j-k] == 'X'):
-							Diagonal_1_X_flag += 1
+							diagonal_1_X_flag += 1
 						elif (self.current_state[i+k][j-k] == 'O'):
-							Diagonal_1_O_flag += 1
-					if Diagonal_1_X_flag == self.gp.line_up_size:
+							diagonal_1_O_flag += 1
+					if diagonal_1_X_flag == self.gp.line_up_size:
 						return 'X'
-					elif Diagonal_1_O_flag == self.gp.line_up_size:
+					elif diagonal_1_O_flag == self.gp.line_up_size:
 						return 'O'
-					Diagonal_1_X_flag = Diagonal_1_O_flag = 0	
+					diagonal_1_X_flag = diagonal_1_O_flag = 0	
 
 		# Is whole board full?
 		for i in range(self.gp.size_of_board):
@@ -166,53 +169,128 @@ class Game:
 			self.player_turn = 'X'
 		return self.player_turn
 
+	#Reference the slides in 4.1a
+	def possible_win_paths(self):
+		score = 0
+		horizontal_X_flag = horizontal_O_flag = horizontal_X_score = horizontal_O_score = 0
+		vertical_X_flag = vertical_O_flag = vertical_X_score = vertical_O_score = 0
+		diagonal_X_flag = diagonal_O_flag = diagonal_1_X_flag = diagonal_1_O_flag = 0
+		diagonal_X_score = diagonal_O_score = diagonal_1_X_score = diagonal_1_O_score = 0
+
+		#Possible Horizontal Wins
+		for i in range(self.gp.size_of_board):
+			for j in range(self.gp.size_of_board):
+				if (j <= self.gp.size_of_board - self.gp.line_up_size):
+					for k in range(self.gp.line_up_size):
+						if (self.current_state[i][j+k] == 'X' or self.current_state[i][j+k] == '.'):
+							horizontal_X_flag += 1
+						elif (self.current_state[i][j+k] == 'O' or self.current_state[i][j+k] == '.'):
+							horizontal_O_flag += 1
+					self.nb_of_evaluated_states += 1
+					if (self.gp.line_up_size == horizontal_X_flag):
+						horizontal_X_score += 1
+					elif (self.gp.line_up_size == horizontal_O_flag):
+						horizontal_O_score += 1
+					horizontal_X_flag = horizontal_O_flag = 0
+		horizontal_score = horizontal_O_score - horizontal_X_score
+
+		#Possible Vertical Wins
+		for i in range(self.gp.size_of_board):
+			for j in range(self.gp.size_of_board):
+				if (i <= self.gp.size_of_board - self.gp.line_up_size):
+					for k in range(self.gp.line_up_size):
+						if (self.current_state[i+k][j] == 'X' or self.current_state[i+k][j] == '.'):
+							vertical_X_flag += 1
+						elif (self.current_state[i+k][j] == 'O' or self.current_state[i+k][j] == '.'):
+							vertical_O_flag += 1
+					self.nb_of_evaluated_states += 1
+					if (self.gp.line_up_size == vertical_X_flag):
+						vertical_X_score += 1
+					elif (self.gp.line_up_size == vertical_O_flag):
+						vertical_O_score += 1
+					vertical_X_flag = vertical_O_flag = 0
+		vertical_score = vertical_O_score - vertical_X_score
+
+		# Diagonal win
+		for i in range(self.gp.size_of_board):
+			for j in range(self.gp.size_of_board):
+				if (i <= self.gp.size_of_board - self.gp.line_up_size and j <= self.gp.size_of_board - self.gp.line_up_size):
+					for k in range(self.gp.line_up_size):
+						if (self.current_state[i+k][j+k] == 'X' or self.current_state[i+k][j+k] == '.'):
+							diagonal_X_flag += 1
+						elif (self.current_state[i+k][j+k] == 'O' or self.current_state[i+k][j+k] == '.'):
+							diagonal_O_flag += 1
+					self.nb_of_evaluated_states += 1
+					if diagonal_X_flag == self.gp.line_up_size:
+						diagonal_X_score += 1
+					elif diagonal_O_flag == self.gp.line_up_size:
+						diagonal_O_score += 1
+					diagonal_X_flag = diagonal_O_flag = 0
+				
+				if (i <= self.gp.size_of_board - self.gp.line_up_size and j >= self.gp.line_up_size -1):
+					for k in range(self.gp.line_up_size):
+						if (self.current_state[i+k][j-k] == 'X' or self.current_state[i+k][j-k] == '.'):
+							diagonal_1_X_flag += 1
+						elif (self.current_state[i+k][j-k] == 'O' or self.current_state[i+k][j-k] == '.'):
+							diagonal_1_O_flag += 1
+					self.nb_of_evaluated_states += 1
+					if diagonal_1_X_flag == self.gp.line_up_size:
+						diagonal_1_X_score += 1
+					elif diagonal_1_O_flag == self.gp.line_up_size:
+						diagonal_1_O_score += 1
+					diagonal_1_X_flag = diagonal_1_O_flag = 0
+		diagonal_score = (diagonal_O_score + diagonal_1_O_score) - (diagonal_X_score + diagonal_1_X_score)
+
+		# win_paths_for_O - win_paths_for_X
+		score = horizontal_score + vertical_score + diagonal_score
+		return score
+
+
 	#Didn't touch this yet
 	def minimax(self, max=False):
-		
-		end = time.time()
-		if max and (end - self.start) > self.gp.threshold:
-			return (-1, None, None)
-		elif max==False and (end - self.start) > self.gp.threshold:
-			return (1, None, None)
-
 		# Minimizing for 'X' and maximizing for 'O'
 		# Possible values are:
 		# -1 - win for 'X'
 		# 0  - a tie
 		# 1  - loss for 'X'
 		# We're initially setting it to 2 or -2 as worse than the worst case:
+		x = y = None
+		end = time.time()
+		if max and (end - self.start) > self.gp.threshold:
+			return (-1, None, None)
+		elif max==False and (end - self.start) > self.gp.threshold:
+			return (1, None, None)
 
-		value = 2
+		value = 100000
 		if max:
-			value = -2
-		x = None
-		y = None
-		result = self.is_end()
-		if result == 'X':
-			return (-1, x, y)
-		elif result == 'O':
-			return (1, x, y)
-		elif result == '.':
-			return (0, x, y)
+			self.current_depth_max += 1
+			value = -100000
+		else:
+			self.current_depth_min += 1
+
+		result = self.possible_win_paths()
+
 		for i in range(self.gp.size_of_board):
 			for j in range(self.gp.size_of_board):
 				if self.current_state[i][j] == '.':
-					#if max and self.d1 > 0:
-					if max:
+					if max and self.current_depth_max <= self.d1:
 						self.current_state[i][j] = 'O'
 						(v, _, _) = self.minimax(max=False)
 						if v > value:
 							value = v
 							x = i
 							y = j
-					#elif max == False and self.d2 > 0:
-					else:
+					elif max and self.current_depth_max > self.d1:
+						return(result, i, j)
+					elif max == False and self.current_depth_min <= self.d2:
 						self.current_state[i][j] = 'X'
 						(v, _, _) = self.minimax(max=True)
 						if v < value:
 							value = v
 							x = i
 							y = j
+					elif max == False and self.current_depth_min > self.d2:
+						return(result, i, j)
 					self.current_state[i][j] = '.'
 		return (value, x, y)
 
@@ -272,8 +350,12 @@ class Game:
 		return (value, x, y)
 
 	def play(self):
+		list_of_chars = [string.ascii_uppercase[i] for i in range(self.gp.size_of_board)]
 		while True:
-			self.draw_board()
+			file_name = "gameTrace-" + str(self.gp.size_of_board) + str(len(self.gp.blocs_coordinates)) + str(self.gp.line_up_size) + str(self.gp.threshold) + '.txt'
+			with open(file_name , "a") as myfile:
+				myfile.write(self.draw_board() + '\n\n')
+			print(self.draw_board())
 			if self.check_end():
 				return
 			self.start = time.time()
@@ -290,12 +372,18 @@ class Game:
 			end = time.time()
 			if (self.player_turn == 'X' and self.mode_of_play()[0] == self.HUMAN) or (self.player_turn == 'O' and self.mode_of_play()[1] == self.HUMAN):
 					if self.recommend:
+						with open(file_name, "a") as myfile:
+							myfile.write(F'\nEvaluation time: {round(end - self.start, 7)}s')
+							myfile.write(F'\nRecommended move: x = {x}, y = {list_of_chars[y]}')
 						print(F'Evaluation time: {round(end - self.start, 7)}s')
-						print(F'Recommended move: x = {x}, y = {y}')
+						print(F'Recommended move: x = {x}, y = {list_of_chars[y]}')
 					(x,y) = self.input_move()
 			if (self.player_turn == 'X' and self.mode_of_play()[0] == self.AI) or (self.player_turn == 'O' and self.mode_of_play()[1] == self.AI):
+						with open(file_name, "a") as myfile:
+							myfile.write(F'Evaluation time: {round(end - self.start, 7)}s\n')
+							myfile.write(F'Player {self.player_turn} under AI control plays: x = {x}, y = {list_of_chars[y]}\n\n')
 						print(F'Evaluation time: {round(end - self.start, 7)}s')
-						print(F'Player {self.player_turn} under AI control plays: x = {x}, y = {y}')
+						print(F'Player {self.player_turn} under AI control plays: x = {x}, y = {list_of_chars[y]}')
 			self.current_state[x][y] = self.player_turn
 			self.switch_player()
 
