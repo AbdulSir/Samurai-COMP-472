@@ -169,11 +169,11 @@ class Game:
 	#Didn't touch this yet
 	def minimax(self, max=False):
 		
-		# end = time.time()
-		# if max and (end - self.start) > self.gp.threshold:
-		# 	return (-1, None, None)
-		# elif max==False and (end - self.start) > self.gp.threshold:
-		# 	return (1, None, None)
+		end = time.time()
+		if max and (end - self.start) > self.gp.threshold:
+			return (-1, None, None)
+		elif max==False and (end - self.start) > self.gp.threshold:
+			return (1, None, None)
 
 		# Minimizing for 'X' and maximizing for 'O'
 		# Possible values are:
@@ -223,6 +223,12 @@ class Game:
 		# 0  - a tie
 		# 1  - loss for 'X'
 		# We're initially setting it to 2 or -2 as worse than the worst case:
+		end = time.time()
+		if max and (end - self.start) > self.gp.threshold:
+			return (-1, None, None)
+		elif max==False and (end - self.start) > self.gp.threshold:
+			return (1, None, None)
+		
 		value = 2
 		if max:
 			value = -2
