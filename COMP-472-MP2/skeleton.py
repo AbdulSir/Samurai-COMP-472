@@ -276,13 +276,19 @@ class Game:
 		end_check = self.is_end()
 		if end_check == 'X':
 			self.current_depth = 0
-			return (-1, x, y)
+			return (-99999, x, y)
 		elif end_check == 'O':
 			self.current_depth = 0
-			return (1, x, y)
+			return (99999, x, y)
 		elif end_check == '.':
 			self.current_depth = 0
 			return (0, x, y)
+
+		# check for the self.current_depth
+		if self.current_depth > depth_limit:
+			self.current_depth -= 1
+			result = self.possible_win_paths()
+			return (result, x, y)
 
 		for i in range(self.gp.size_of_board):
 			for j in range(self.gp.size_of_board):
@@ -294,20 +300,15 @@ class Game:
 							value = v
 							x = i
 							y = j
-					elif max == False and self.current_depth <= depth_limit:
+					elif max is False and self.current_depth <= depth_limit:
 						self.current_state[i][j] = 'X'
 						(v, _, _) = self.minimax(max=True)
 						if v < value:
 							value = v
 							x = i
 							y = j
-					#check for the self.current_depth
 					self.current_state[i][j] = '.'
 
-		if self.current_depth > depth_limit:
-			self.current_depth = 0
-			result = self.possible_win_paths()
-			return(result, i, j)
 		return (value, x, y)
 
 	def alphabeta(self, alpha=-2, beta=2, max=False):
@@ -376,8 +377,7 @@ class Game:
 				return
 			self.start = time.time()
 			self.nb_of_evaluated_states = 0 
-			self.current_depth_max = 0
-			self.current_depth_min = 0
+			self.current_depth = 0
 			if self.gp.minimax_alphabeta_bool == self.MINIMAX:
 				if self.player_turn == 'X':
 					(_, x, y) = self.minimax(max=False)
