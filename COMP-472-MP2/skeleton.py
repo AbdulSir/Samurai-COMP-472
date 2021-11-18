@@ -380,8 +380,9 @@ class Game:
 					(x,y) = self.input_move()
 			if (self.player_turn == 'X' and self.mode_of_play()[0] == self.AI) or (self.player_turn == 'O' and self.mode_of_play()[1] == self.AI):
 						with open(file_name, "a") as myfile:
-							myfile.write(F'Evaluation time: {round(end - self.start, 7)}s\n')
 							myfile.write(F'Player {self.player_turn} under AI control plays: x = {x}, y = {list_of_chars[y]}\n\n')
+							myfile.write(F'\ni\tEvaluation time: {round(end - self.start, 7)}s\n')
+							myfile.write(F'\nii\tHeuristic evaluations: {self.nb_of_evaluated_states}s\n')
 						print(F'Evaluation time: {round(end - self.start, 7)}s')
 						print(F'Player {self.player_turn} under AI control plays: x = {x}, y = {list_of_chars[y]}')
 			self.current_state[x][y] = self.player_turn
