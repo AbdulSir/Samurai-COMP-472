@@ -1,0 +1,99 @@
+n=3 b=1 s=3 t=20
+blocs= [(0, 1)]
+
+Player 1:AI d=3 a=False e1(Possible win paths)
+Player 2:AI d=3 a=False e1(Possible win paths)
+
+  A B C
+0|. * . 
+1|. . . 
+2|. . . 
+
+Player X under AI control plays: x = 0, y = A
+
+
+i	Evaluation time: 1.6295457s
+
+ii	Heuristic evaluations: 7232
+  A B C
+0|X * . 
+1|. . . 
+2|. . . 
+
+Player O under AI control plays: x = 1, y = A
+
+
+i	Evaluation time: 0.2525451s
+
+ii	Heuristic evaluations: 920
+  A B C
+0|X * . 
+1|O . . 
+2|. . . 
+
+Player X under AI control plays: x = 0, y = C
+
+
+i	Evaluation time: 0.0530405s
+
+ii	Heuristic evaluations: 136
+  A B C
+0|X * X 
+1|O . . 
+2|. . . 
+
+Player O under AI control plays: x = 1, y = B
+
+
+i	Evaluation time: 0.011991s
+
+ii	Heuristic evaluations: 24
+  A B C
+0|X * X 
+1|O O . 
+2|. . . 
+
+Player X under AI control plays: x = 1, y = C
+
+
+i	Evaluation time: 0.0025601s
+
+ii	Heuristic evaluations: 8
+  A B C
+0|X * X 
+1|O O X 
+2|. . . 
+
+Player O under AI control plays: x = 2, y = C
+
+
+i	Evaluation time: 0.0016315s
+
+ii	Heuristic evaluations: 0
+  A B C
+0|X * X 
+1|O O X 
+2|. . O 
+
+Player X under AI control plays: x = 2, y = A
+
+
+i	Evaluation time: 0.0009992s
+
+ii	Heuristic evaluations: 0
+  A B C
+0|X * X 
+1|O O X 
+2|X . O 
+
+Player O under AI control plays: x = 2, y = B
+
+
+i	Evaluation time: 0.0s
+
+ii	Heuristic evaluations: 0
+  A B C
+0|X * X 
+1|O O X 
+2|X O O 
+
