@@ -14,7 +14,7 @@ Player 2:AI d=5 a=False e1(Possible win paths)
 Player X under AI control plays: x = 0, y = B
 
 
-i	Evaluation time: 0.039994s
+i	Evaluation time: 0.041995s
 
 ii	Heuristic evaluations: 1092
   A B C D E
@@ -27,7 +27,7 @@ ii	Heuristic evaluations: 1092
 Player O under AI control plays: x = 2, y = C
 
 
-i	Evaluation time: 0.025001s
+i	Evaluation time: 0.0250039s
 
 ii	Heuristic evaluations: 1272
   A B C D E
@@ -40,7 +40,7 @@ ii	Heuristic evaluations: 1272
 Player X under AI control plays: x = 0, y = C
 
 
-i	Evaluation time: 0.037998s
+i	Evaluation time: 0.0329959s
 
 ii	Heuristic evaluations: 996
   A B C D E
@@ -53,7 +53,7 @@ ii	Heuristic evaluations: 996
 Player O under AI control plays: x = 0, y = A
 
 
-i	Evaluation time: 0.0190001s
+i	Evaluation time: 0.0250001s
 
 ii	Heuristic evaluations: 1152
   A B C D E
@@ -66,7 +66,7 @@ ii	Heuristic evaluations: 1152
 Player X under AI control plays: x = 0, y = E
 
 
-i	Evaluation time: 0.0150001s
+i	Evaluation time: 0.019002s
 
 ii	Heuristic evaluations: 900
   A B C D E
@@ -79,7 +79,7 @@ ii	Heuristic evaluations: 900
 Player O under AI control plays: x = 1, y = B
 
 
-i	Evaluation time: 0.013999s
+i	Evaluation time: 0.0189979s
 
 ii	Heuristic evaluations: 1032
   A B C D E
@@ -92,7 +92,7 @@ ii	Heuristic evaluations: 1032
 Player X under AI control plays: x = 1, y = A
 
 
-i	Evaluation time: 0.0070028s
+i	Evaluation time: 0.007s
 
 ii	Heuristic evaluations: 804
   A B C D E
@@ -105,7 +105,7 @@ ii	Heuristic evaluations: 804
 Player O under AI control plays: x = 3, y = D
 
 
-i	Evaluation time: 0.006999s
+i	Evaluation time: 0.0079999s
 
 ii	Heuristic evaluations: 912
   A B C D E
@@ -118,9 +118,9 @@ ii	Heuristic evaluations: 912
 Player X under AI control plays: x = 1, y = C
 
 
-i	Evaluation time: 0.003998s
+i	Evaluation time: 10.0019989s
 
-ii	Heuristic evaluations: 684
+ii	Heuristic evaluations: 1361232
   A B C D E
 0|O X X . X 
 1|X O X . . 
@@ -128,16 +128,16 @@ ii	Heuristic evaluations: 684
 3|. . . O . 
 4|. . . . . 
 
-Player O under AI control plays: x = 4, y = E
+Player O under AI control plays: x = 1, y = D
 
 
-i	Evaluation time: 0.0040021s
+i	Evaluation time: 10.0019991s
 
-ii	Heuristic evaluations: 756
+ii	Heuristic evaluations: 364872
   A B C D E
 0|O X X . X 
-1|X O X . . 
+1|X O X O . 
 2|. . O . . 
 3|. . . O . 
-4|. . . . O 
+4|. . . . . 
 

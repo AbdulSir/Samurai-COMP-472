@@ -262,10 +262,10 @@ class Game:
 		end = time.time()
 		if max and (end - self.start) > self.gp.threshold:
 			print(self.current_depth)
-			return (-1, None, None)
+			return (-99999, None, None)
 		elif max==False and (end - self.start) > self.gp.threshold:
 			print(self.current_depth)
-			return (1, None, None)
+			return (99999, None, None)
 		
 		value = 100000
 		if max:
@@ -275,13 +275,13 @@ class Game:
 
 		end_check = self.is_end()
 		if end_check == 'X':
-			self.current_depth = 0
+			self.current_depth -=1
 			return (-99999, x, y)
 		elif end_check == 'O':
-			self.current_depth = 0
+			self.current_depth -=1
 			return (99999, x, y)
 		elif end_check == '.':
-			self.current_depth = 0
+			self.current_depth -=1
 			return (0, x, y)
 
 		# check for the self.current_depth
