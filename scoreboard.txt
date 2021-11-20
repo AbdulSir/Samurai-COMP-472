@@ -1,0 +1,25 @@
+n=4 b=4 s=3 t=5Player 1:AI d=6 a=False e1(Possible win paths)
+Player 2:AI d=6 a=False e1(Possible win paths)
+
+20 games
+
+n=4 b=4 s=3 t=1Player 1:AI d=6 a=True e1(Possible win paths)
+Player 2:AI d=6 a=True e1(Possible win paths)
+
+20 games
+
+n=5 b=4 s=4 t=1Player 1:AI d=2 a=True e1(Possible win paths)
+Player 2:AI d=6 a=True e1(Possible win paths)
+
+20 games
+
+n=5 b=4 s=4 t=5Player 1:AI d=6 a=True e1(Possible win paths)
+Player 2:AI d=6 a=True e1(Possible win paths)
+
+20 games
+
+n=8 b=5 s=5 t=1Player 1:AI d=6 a=True e1(Possible win paths)
+Player 2:AI d=6 a=True e1(Possible win paths)
+
+20 games
+

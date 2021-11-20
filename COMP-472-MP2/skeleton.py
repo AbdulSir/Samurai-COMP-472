@@ -13,17 +13,20 @@ class Game:
 	gp = Game_Parameter()
 	d1 = gp.max_depth_d1
 	d2 = gp.max_depth_d2
-	# current_depth_max = 0 #the current depth of the recursion
-	# current_depth_min = 0
 	nb_of_evaluated_states = 0
 	current_depth = 0
 	states_depth = {}
+	global_states_depth = {}
 	average_depth_dict = {}
 	total_evaluated_time = []
+	global_evaluated_time = 0
+	global_total_heuristic_eval = 0
 	total_heuristic_eval = 0
 	total_eval_by_depth = {}
 	total_avg_eval_depth = 0
+	global_avg_eval_depth = 0
 	total_moves = 0
+	global_moves = 0
 
 	def __init__(self, recommend = True):
 		self.initialize_game()
@@ -371,8 +374,11 @@ class Game:
 
 		if self.player_turn == 'O':
 			depth_limit = self.d2
+			chosen_heuristic = self.gp.heuristic_chosen_p1
 		else:
 			depth_limit = self.d1
+			chosen_heuristic = self.gp.heuristic_chosen_p2
+
 
 		x = y = None
 		end = time.time()
@@ -410,7 +416,10 @@ class Game:
 			self.current_depth -= 1
 			#Choose the heuristic here
 			#result = self.possible_win_paths()
-			result = self.weighted_possible_win_paths()
+			if (chosen_heuristic == 0):
+				result = self.possible_win_paths()
+			else:
+				result = self.weighted_possible_win_paths()
 			return (result, x, y)
 
 		for i in range(self.gp.size_of_board):
@@ -451,8 +460,10 @@ class Game:
 		# Set the depth limit for this call, given the player's turn
 		if self.player_turn == 'O':
 			depth_limit = self.d2
+			chosen_heuristic = self.gp.heuristic_chosen_p1
 		else:
 			depth_limit = self.d1
+			chosen_heuristic = self.gp.heuristic_chosen_p2
 
 		# Initialize the X and Y coordinates for the optimal move
 		x = y = None
@@ -497,7 +508,10 @@ class Game:
 			self.current_depth -= 1
 			#Choose the heuristic here
 			#result = self.possible_win_paths()
-			result = self.weighted_possible_win_paths()
+			if (chosen_heuristic == 0):
+				result = self.possible_win_paths()
+			else:
+				result = self.weighted_possible_win_paths()
 			return (result, x, y)
 
 		# Iterate through the board to test all possible moves
@@ -540,6 +554,15 @@ class Game:
 				avg += key
 		return round(avg/total, 2)
 	
+	def global_average_depth(self):
+		total = 0
+		avg = 0
+		for key in self.global_states_depth:
+			total += self.global_states_depth[key]
+			for i in range(self.global_states_depth[key]):
+				avg += key
+		return round(avg/total, 2)
+
 	def evaluated_states(self):
 		total = 0
 		for key in self.states_depth:
@@ -551,7 +574,7 @@ class Game:
 		for i in self.total_evaluated_time:
 			total += i
 		return round(total/len(self.total_evaluated_time), 2)
-
+	
 	def eval_by_depth(self):
 		if self.states_depth != {}:
 			for key in self.states_depth:
@@ -559,16 +582,28 @@ class Game:
 					self.total_eval_by_depth[key] = self.states_depth[key]
 				else:
 					self.total_eval_by_depth[key] += self.states_depth[key]
-	
+
+	def global_eval_by_depth(self):
+		if self.states_depth != {}:
+			for key in self.states_depth:
+				if key not in self.global_states_depth:
+					self.global_states_depth[key] = self.states_depth[key]
+				else:
+					self.global_states_depth[key] += self.states_depth[key]
+
 	def play(self):
 		list_of_chars = [string.ascii_uppercase[i] for i in range(self.gp.size_of_board)]
-		minimax_alphabeta_boolean_local = self.gp.minimax_alphabeta_bool
 		while True:
 			file_name = "gameTrace-" + str(self.gp.size_of_board) + str(len(self.gp.blocs_coordinates)) + str(self.gp.line_up_size) + str(self.gp.threshold) + '.txt'
 			with open(file_name, "a") as myfile:
 				myfile.write(self.draw_board() + '\n\n')
 			print(self.draw_board())
 			if self.check_end():
+				self.global_evaluated_time += self.avg_evaluated_time()
+				self.global_total_heuristic_eval += self.total_heuristic_eval
+				self.global_eval_by_depth()
+				self.global_avg_eval_depth += self.global_average_depth()
+				self.global_moves += self.total_moves
 				with open(file_name , "a") as myfile:
 					myfile.write(F'6(b)i \tAverage evaluation time: {self.avg_evaluated_time()}s\n')
 					myfile.write(F'6(b)ii \tTotal heuristic evaluations: {self.total_heuristic_eval}\n')
@@ -581,8 +616,7 @@ class Game:
 			self.states_depth = {}
 			self.nb_of_evaluated_states = 0 
 			self.current_depth = 0
-			#if self.gp.minimax_alphabeta_bool == self.MINIMAX:
-			if 1 == self.MINIMAX:
+			if self.gp.minimax_alphabeta_bool == self.MINIMAX:
 				if self.player_turn == 'X':
 					print("X using minimax")
 					(_, x, y) = self.minimax(max=False)
@@ -624,4 +658,30 @@ class Game:
 			self.current_state[x][y] = self.player_turn
 			self.switch_player()
 			self.average_depth_dict = {}
+		
+	def game_series(self, nb_of_games):
+		self.gp.heuristic_chosen_p1 = 0
+		self.gp.heuristic_chosen_p2 = 1
+		for i in range(2):
+			if i==0:
+				self.player_turn = 'X'
+			else:
+				self.player_turn = 'O'
+			for j in range(nb_of_games):
+				self.initialize_game()
+				self.play()
+				
+
+		with open("scoreboard.txt", "a") as myfile:
+			myfile.write(F'i \tAverage evaluation time: {round(self.global_evaluated_time/10, 2)}s\n')
+			myfile.write(F'ii \tTotal heuristic evaluations: {self.global_total_heuristic_eval}\n')
+			myfile.write(F'iii\tEvaluations by depth: {self.global_states_depth}\n')
+			myfile.write(F'iv \tAverage evaluation depth: {round(self.global_avg_eval_depth/10,2)}\n')
+			myfile.write(F'v \tAverage moves per game: {round(self.global_moves/10,2)}\n')
+
+
+
+
+
+
 
