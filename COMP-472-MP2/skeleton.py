@@ -151,23 +151,24 @@ class Game:
 		return self.result
 
 	def input_move(self):
-		list_of_chars = [string.ascii_uppercase[i] for i in range(self.gp.size_of_board)]
-		column_selected = input(
-			"Please indicate the column [A-" + string.ascii_uppercase[self.gp.size_of_board - 1] + "]:\n")
-		while column_selected not in list_of_chars:
-			print("Invalid input")
+		while True:
+			list_of_chars = [string.ascii_uppercase[i] for i in range(self.gp.size_of_board)]
 			column_selected = input(
 				"Please indicate the column [A-" + string.ascii_uppercase[self.gp.size_of_board - 1] + "]:\n")
-		for i in range(len(list_of_chars)):
-			if column_selected == list_of_chars[i]:
-				column_selected = str(i)
+			while column_selected.upper() not in list_of_chars:
+				print("Invalid input")
+				column_selected = input(
+					"Please indicate the column [A-" + string.ascii_uppercase[self.gp.size_of_board - 1] + "]:\n")
+			column_selected = list_of_chars.index(column_selected.upper())
 
-		row_selected = int(input("Please indicate the row [0-" + str(self.gp.size_of_board - 1) + "]:\n"))
-		while row_selected not in [i for i in range(self.gp.size_of_board)]:
-			print("Invalid input")
 			row_selected = int(input("Please indicate the row [0-" + str(self.gp.size_of_board - 1) + "]:\n"))
+			while row_selected not in [i for i in range(self.gp.size_of_board)]:
+				print("Invalid input")
+				row_selected = int(input("Please indicate the row [0-" + str(self.gp.size_of_board - 1) + "]:\n"))
 
-		return (int(column_selected), row_selected)
+			if self.current_state[row_selected][column_selected] == '.':
+				return (int(column_selected), row_selected)
+			print("Invalid input")
 
 	#Reference the slides in 4.1a
 	def possible_win_paths(self):
@@ -392,7 +393,8 @@ class Game:
 			if (self.player_turn == 'X' and self.mode_of_play()[0] == self.HUMAN) or (self.player_turn == 'O' and self.mode_of_play()[1] == self.HUMAN):
 					if self.recommend:
 						with open(file_name, "a") as myfile:
-							myfile.write(F'\nEvaluation time: {round(end - self.start, 7)}s')
+							myfile.write(F'\ni\tEvaluation time: {round(end - self.start, 7)}s')
+							myfile.write(F'\nii\tHeuristic evaluations: {self.nb_of_evaluated_states}\n')
 							myfile.write(F'\nRecommended move: x = {x}, y = {list_of_chars[y]}')
 						print(F'Evaluation time: {round(end - self.start, 7)}s')
 						print(F'Recommended move: x = {x}, y = {list_of_chars[y]}')
