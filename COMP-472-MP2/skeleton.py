@@ -19,6 +19,11 @@ class Game:
 	current_depth = 0
 	states_depth = {}
 	average_depth_dict = {}
+	total_evaluated_time = []
+	total_heuristic_eval = 0
+	total_eval_by_depth = {}
+	total_avg_eval_depth = 0
+	total_moves = 0
 
 	def __init__(self, recommend = True):
 		self.initialize_game()
@@ -141,13 +146,20 @@ class Game:
 
 	def check_end(self):
 		self.result = self.is_end()
+		file_name = "gameTrace-" + str(self.gp.size_of_board) + str(len(self.gp.blocs_coordinates)) + str(self.gp.line_up_size) + str(self.gp.threshold) + '.txt'
 		# Printing the appropriate message if the game has ended
 		if self.result != None:
 			if self.result == 'X':
+				with open(file_name , "a") as myfile:
+					myfile.write('The winner is X!\n\n')
 				print('The winner is X!')
 			elif self.result == 'O':
+				with open(file_name , "a") as myfile:
+					myfile.write('The winner is O!\n\n')
 				print('The winner is O!')
 			elif self.result == '.':
+				with open(file_name , "a") as myfile:
+					myfile.write("It's a tie!\n\n")
 				print("It's a tie!")
 			self.initialize_game()
 		return self.result
@@ -247,8 +259,6 @@ class Game:
 		score = horizontal_score + vertical_score + diagonal_score
 		return score
 
-
-	#Didn't touch this yet
 	def minimax(self, max=False):
 		# Minimizing for 'X' and maximizing for 'O'
 		# Possible values are:
@@ -390,7 +400,21 @@ class Game:
 		for key in self.states_depth:
 			total += self.states_depth[key]
 		return total
+	
+	def avg_evaluated_time(self):
+		total = 0
+		for i in self.total_evaluated_time:
+			total += i
+		return round(total/len(self.total_evaluated_time), 2)
 
+	def eval_by_depth(self):
+		if self.states_depth != {}:
+			for key in self.states_depth:
+				if key not in self.total_eval_by_depth:
+					self.total_eval_by_depth[key] = self.states_depth[key]
+				else:
+					self.total_eval_by_depth[key] += self.states_depth[key]
+	
 	def play(self):
 		list_of_chars = [string.ascii_uppercase[i] for i in range(self.gp.size_of_board)]
 		while True:
@@ -399,8 +423,15 @@ class Game:
 				myfile.write(self.draw_board() + '\n\n')
 			print(self.draw_board())
 			if self.check_end():
+				with open(file_name , "a") as myfile:
+					myfile.write(F'6(b)i \tAverage evaluation time: {self.avg_evaluated_time()}s\n')
+					myfile.write(F'6(b)ii \tTotal heuristic evaluations: {self.total_heuristic_eval}\n')
+					myfile.write(F'6(b)iii\tEvaluations by depth: {self.total_eval_by_depth}\n')
+					myfile.write(F'6(b)iv \tAverage evaluation depth: {round(self.total_avg_eval_depth,2)}\n')
+					myfile.write(F'6(b)vi \tTotal moves: {self.total_moves}\n')
 				return
 			self.start = time.time()
+			self.eval_by_depth()
 			self.states_depth = {}
 			self.nb_of_evaluated_states = 0 
 			self.current_depth = 0
@@ -415,13 +446,17 @@ class Game:
 				else:
 					(m, x, y) = self.alphabeta(max=True)
 			end = time.time()
+			self.total_evaluated_time.append(round(end - self.start, 7))
+			self.total_heuristic_eval += self.evaluated_states()
+			self.total_avg_eval_depth += self.average_depth()
+			self.total_moves += 1
 			if (self.player_turn == 'X' and self.mode_of_play()[0] == self.HUMAN) or (self.player_turn == 'O' and self.mode_of_play()[1] == self.HUMAN):
 					if self.recommend:
 						with open(file_name, "a") as myfile:
-							myfile.write(F'i\tEvaluation time: {round(end - self.start, 7)}s')
-							myfile.write(F'ii\tHeuristic evaluations: {self.evaluated_states()}\n')
+							myfile.write(F'i \tEvaluation time: {round(end - self.start, 7)}s\n')
+							myfile.write(F'ii \tHeuristic evaluations: {self.evaluated_states()}\n')
 							myfile.write(F'iii\tEvaluations by depth: {str(self.states_depth)}\n')
-							myfile.write(F'iv\tAverage evaluation depth: {str(self.average_depth())}\n')
+							myfile.write(F'iv \tAverage evaluation depth: {str(self.average_depth())}\n\n')
 							myfile.write(F'\nRecommended move: x = {x}, y = {list_of_chars[y]}')
 						print(F'Evaluation time: {round(end - self.start, 7)}s')
 						print(F'Recommended move: x = {x}, y = {list_of_chars[y]}')
@@ -429,10 +464,10 @@ class Game:
 			if (self.player_turn == 'X' and self.mode_of_play()[0] == self.AI) or (self.player_turn == 'O' and self.mode_of_play()[1] == self.AI):
 						with open(file_name, "a") as myfile:
 							myfile.write(F'Player {self.player_turn} under AI control plays: x = {x}, y = {list_of_chars[y]}\n\n')
-							myfile.write(F'i\tEvaluation time: {round(end - self.start, 7)}s\n')
-							myfile.write(F'ii\tHeuristic evaluations: {self.evaluated_states()}\n')
+							myfile.write(F'i \tEvaluation time: {round(end - self.start, 7)}s\n')
+							myfile.write(F'ii \tHeuristic evaluations: {self.evaluated_states()}\n')
 							myfile.write(F'iii\tEvaluations by depth: {str(self.states_depth)}\n')
-							myfile.write(F'iv\tAverage evaluation depth: {str(self.average_depth())}\n')
+							myfile.write(F'iv \tAverage evaluation depth: {str(self.average_depth())}\n\n')
 						print(F'Evaluation time: {round(end - self.start, 7)}s')
 						print(F'Player {self.player_turn} under AI control plays: x = {x}, y = {list_of_chars[y]}')
 			self.current_state[x][y] = self.player_turn
