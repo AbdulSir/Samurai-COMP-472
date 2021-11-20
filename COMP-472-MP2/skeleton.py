@@ -259,6 +259,103 @@ class Game:
 		score = horizontal_score + vertical_score + diagonal_score
 		return score
 
+		#Reference the slides in 4.1a
+	def weighted_possible_win_paths(self):
+		score = 0
+		horizontal_X_flag = horizontal_O_flag = horizontal_X_score = horizontal_O_score = 0
+		vertical_X_flag = vertical_O_flag = vertical_X_score = vertical_O_score = 0
+		diagonal_X_flag = diagonal_O_flag = diagonal_1_X_flag = diagonal_1_O_flag = 0
+		diagonal_X_score = diagonal_O_score = diagonal_1_X_score = diagonal_1_O_score = 0
+		x_weight = o_weight = 0
+
+		#Possible Horizontal Wins
+		for i in range(self.gp.size_of_board):
+			for j in range(self.gp.size_of_board):
+				if (j <= self.gp.size_of_board - self.gp.line_up_size):
+					for k in range(self.gp.line_up_size):
+						if (self.current_state[i][j+k] == 'X'):
+							horizontal_X_flag += 1
+							x_weight += 1
+						elif (self.current_state[i][j+k] == 'O'):
+							horizontal_O_flag += 1
+							o_weight += 1
+						elif (self.current_state[i][j+k] == '.'):
+							horizontal_X_flag += 1
+							horizontal_O_flag += 1
+					self.nb_of_evaluated_states += 1
+					if (self.gp.line_up_size == horizontal_X_flag):
+						horizontal_X_score += 1 + x_weight
+					elif (self.gp.line_up_size == horizontal_O_flag):
+						horizontal_O_score += 1 + o_weight
+					horizontal_X_flag = horizontal_O_flag = x_weight = o_weight = 0
+		#Formula is below 
+		horizontal_score = horizontal_O_score - horizontal_X_score
+	
+		#Possible Vertical Wins
+		for i in range(self.gp.size_of_board):
+			for j in range(self.gp.size_of_board):
+				if (i <= self.gp.size_of_board - self.gp.line_up_size):
+					for k in range(self.gp.line_up_size):
+						if (self.current_state[i+k][j] == 'X'):
+							vertical_X_flag += 1
+							x_weight += 1
+						elif (self.current_state[i+k][j] == 'O'):
+							vertical_O_flag += 1
+							o_weight += 1
+						elif (self.current_state[i+k][j] == '.'):
+							vertical_X_flag += 1
+							vertical_O_flag += 1
+					self.nb_of_evaluated_states += 1
+					if (self.gp.line_up_size == vertical_X_flag):
+						vertical_X_score += 1 + x_weight
+					elif (self.gp.line_up_size == vertical_O_flag):
+						vertical_O_score += 1 + o_weight
+					vertical_X_flag = vertical_O_flag = x_weight = o_weight = 0
+		vertical_score = vertical_O_score - vertical_X_score
+	
+		# Diagonal win
+		for i in range(self.gp.size_of_board):
+			for j in range(self.gp.size_of_board):
+				if (i <= self.gp.size_of_board - self.gp.line_up_size and j <= self.gp.size_of_board - self.gp.line_up_size):
+					for k in range(self.gp.line_up_size):
+						if (self.current_state[i+k][j+k] == 'X'):
+							diagonal_X_flag += 1
+							x_weight += 1
+						elif (self.current_state[i+k][j+k] == 'O'):
+							diagonal_O_flag += 1
+							o_weight += 1
+						elif (self.current_state[i+k][j+k] == '.'):
+							diagonal_X_flag += 1
+							diagonal_O_flag += 1
+					self.nb_of_evaluated_states += 1
+					if diagonal_X_flag == self.gp.line_up_size:
+						diagonal_X_score += 1 + x_weight
+					elif diagonal_O_flag == self.gp.line_up_size:
+						diagonal_O_score += 1 + o_weight
+					diagonal_X_flag = diagonal_O_flag = x_weight = o_weight = 0
+				
+				if (i <= self.gp.size_of_board - self.gp.line_up_size and j >= self.gp.line_up_size -1):
+					for k in range(self.gp.line_up_size):
+						if (self.current_state[i+k][j-k] == 'X'):
+							diagonal_1_X_flag += 1
+							x_weight += 1
+						elif (self.current_state[i+k][j-k] == 'O'):
+							o_weight += 1
+							diagonal_1_O_flag += 1
+						elif (self.current_state[i+k][j-k] == '.'):
+							diagonal_1_X_flag += 1
+							diagonal_1_O_flag += 1
+					self.nb_of_evaluated_states += 1
+					if diagonal_1_X_flag == self.gp.line_up_size:
+						diagonal_1_X_score += 1 + x_weight
+					elif diagonal_1_O_flag == self.gp.line_up_size:
+						diagonal_1_O_score += 1 + o_weight
+					diagonal_1_X_flag = diagonal_1_O_flag = x_weight = o_weight = 0
+		diagonal_score = (diagonal_O_score + diagonal_1_O_score) - (diagonal_X_score + diagonal_1_X_score)
+		# win_paths_for_O - win_paths_for_X
+		score = horizontal_score + vertical_score + diagonal_score
+		return score
+
 	def minimax(self, max=False):
 		# Minimizing for 'X' and maximizing for 'O'
 		# Possible values are:
@@ -307,7 +404,9 @@ class Game:
 		# check for the self.current_depth
 		if self.current_depth > depth_limit:
 			self.current_depth -= 1
-			result = self.possible_win_paths()
+			#Choose the heuristic here
+			#result = self.possible_win_paths()
+			result = self.weighted_possible_win_paths()
 			return (result, x, y)
 
 		for i in range(self.gp.size_of_board):
