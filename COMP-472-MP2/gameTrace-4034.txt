@@ -1,0 +1,51 @@
+n=4 b=0 s=3 t=4
+blocs= []
+
+Player 1:AI d=3 a=False e1(Possible win paths)
+Player 2:AI d=3 a=False e1(Possible win paths)
+
+  A B C D
+0|. . . . 
+1|. . . . 
+2|. . . . 
+3|. . . . 
+
+Player X under AI control plays: x = 1, y = B
+
+i 	Evaluation time: 0.0190001s
+ii 	Heuristic evaluations: 1060
+iii	Evaluations by depth: {0: 1, 1: 2, 2: 3, 3: 1054}
+iv 	Average evaluation depth: 2.99
+
+  A B C D
+0|. . . . 
+1|. X . . 
+2|. . . . 
+3|. . . . 
+
+Player O under AI control plays: x = 1, y = C
+
+i 	Evaluation time: 0.027998s
+ii 	Heuristic evaluations: 985
+iii	Evaluations by depth: {0: 1, 1: 2, 2: 3, 3: 979}
+iv 	Average evaluation depth: 2.99
+
+  A B C D
+0|. . . . 
+1|. X O . 
+2|. . . . 
+3|. . . . 
+
+Player X under AI control plays: x = 2, y = B
+
+i 	Evaluation time: 0.035002s
+ii 	Heuristic evaluations: 1289
+iii	Evaluations by depth: {0: 1, 1: 2, 2: 155, 3: 1131}
+iv 	Average evaluation depth: 2.87
+
+  A B C D
+0|. . . . 
+1|. X O . 
+2|. X . . 
+3|. . . . 
+

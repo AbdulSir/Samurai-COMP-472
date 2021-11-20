@@ -6,7 +6,7 @@ class Game_Parameter:
     size_of_board = num_of_blocs = position_of_blocs = line_up_size = max_depth_d1 = max_depth_d2 = threshold = 0
     blocs_x_coord = blocs_y_coord = 0
     blocs_coordinates = []
-    minimax_alphabeta_bool = False #default minimax (False) - Alphabeta (True)
+    minimax_alphabeta_bool = 0 #default minimax (False) - Alphabeta (True)
     play_modes = ""
     board = []
 
@@ -76,7 +76,7 @@ class Game_Parameter:
         else:
             minimax_alphabeta_bool = 1
 
-        print (minimax_alphabeta_bool)
+        print(minimax_alphabeta_bool)
 
         self.play_modes = input("Please enter the play modes (i.e. H-H, H-AI, AI-H, AI-AI):\n")
         while (self.play_modes.lower() != "h-h") and (self.play_modes.lower() != "h-ai") and (self.play_modes.lower() != "ai-h") and (self.play_modes.lower() != "ai-ai"):
@@ -85,7 +85,7 @@ class Game_Parameter:
 
         print(self.play_modes)
 
-    # Attempting to pring the board
+    # Attempting to print the board
     def init_board(self):
         for i in range(self.size_of_board):
             row = []

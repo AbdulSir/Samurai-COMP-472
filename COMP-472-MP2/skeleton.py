@@ -340,8 +340,8 @@ class Game:
 							diagonal_1_X_flag += 1
 							x_weight += 1
 						elif (self.current_state[i+k][j-k] == 'O'):
-							o_weight += 1
 							diagonal_1_O_flag += 1
+							o_weight += 1
 						elif (self.current_state[i+k][j-k] == '.'):
 							diagonal_1_X_flag += 1
 							diagonal_1_O_flag += 1
@@ -359,10 +359,10 @@ class Game:
 	def minimax(self, max=False):
 		# Minimizing for 'X' and maximizing for 'O'
 		# Possible values are:
-		# -1 - win for 'X'
+		# -99999 - win for 'X'
 		# 0  - a tie
-		# 1  - loss for 'X'
-		# We're initially setting it to 2 or -2 as worse than the worst case:
+		# 99999  - loss for 'X'
+		# We're initially setting it to 100000 or -100000 as worse than the worst case:
 		
 		if self.current_depth not in self.average_depth_dict:
 			self.average_depth_dict[self.current_depth] = 1
@@ -377,10 +377,12 @@ class Game:
 		x = y = None
 		end = time.time()
 		if max and (end - self.start) > self.gp.threshold:
-			print(self.current_depth)
+			print("MAX Timeout at depth", self.current_depth)
+			self.current_depth -= 1
 			return (-99999, None, None)
-		elif max==False and (end - self.start) > self.gp.threshold:
-			print(self.current_depth)
+		elif max is False and (end - self.start) > self.gp.threshold:
+			print("MIN Timeout at depth", self.current_depth)
+			self.current_depth -= 1
 			return (99999, None, None)
 		
 		value = 100000
@@ -390,6 +392,9 @@ class Game:
 		end_check = self.is_end()
 		self.nb_of_evaluated_states += 1
 		self.states_depth[self.current_depth] = self.nb_of_evaluated_states
+
+		self.current_depth += 1
+
 		if end_check == 'X':
 			self.current_depth -=1
 			return (-99999, x, y)
@@ -400,7 +405,6 @@ class Game:
 			self.current_depth -=1
 			return (0, x, y)
 
-		self.current_depth += 1
 		# check for the self.current_depth
 		if self.current_depth > depth_limit:
 			self.current_depth -= 1
@@ -430,42 +434,84 @@ class Game:
 
 		return (value, x, y)
 
-	def alphabeta(self, alpha=-2, beta=2, max=False):
+	def alphabeta(self, alpha=-100000, beta=100000, max=False):
 		# Minimizing for 'X' and maximizing for 'O'
 		# Possible values are:
-		# -1 - win for 'X'
+		# -99999 - win for 'X'
 		# 0  - a tie
-		# 1  - loss for 'X'
-		# We're initially setting it to 2 or -2 as worse than the worst case:
+		# 99999  - loss for 'X'
+		# We're initially setting it to 100000 or -100000 as worse than the worst case:
+
+		# Average depth calculation
+		if self.current_depth not in self.average_depth_dict:
+			self.average_depth_dict[self.current_depth] = 1
+		else:
+			self.average_depth_dict[self.current_depth] += 1
+
+		# Set the depth limit for this call, given the player's turn
+		if self.player_turn == 'O':
+			depth_limit = self.d2
+		else:
+			depth_limit = self.d1
+
+		# Initialize the X and Y coordinates for the optimal move
+		x = y = None
+
+		# Timeout check, defaults for the other player
 		end = time.time()
 		if max and (end - self.start) > self.gp.threshold:
-			return (-1, None, None)
-		elif max == False and (end - self.start) > self.gp.threshold:
-			return (1, None, None)
+			print("MAX Timeout at depth", self.current_depth)
+			self.current_depth -= 1
+			return (-99999, None, None)
+		elif max is False and (end - self.start) > self.gp.threshold:
+			print("MIN Timeout at depth", self.current_depth)
+			self.current_depth -= 1
+			return (99999, None, None)
 
-		value = 2
+		# Starting values (worse than a loss, better than a win)
+		value = 100000
 		if max:
-			value = -2
-		x = None
-		y = None
-		result = self.is_end()
-		if result == 'X':
-			return (-1, x, y)
-		elif result == 'O':
-			return (1, x, y)
-		elif result == '.':
+			value = -100000
+
+		end_check = self.is_end()
+		self.nb_of_evaluated_states += 1
+		self.states_depth[self.current_depth] = self.nb_of_evaluated_states
+
+		# Increment the depth of the recursion
+		self.current_depth += 1
+
+		# If this state is the end of the game, return who won (or if there was a draw)
+		# Also, move the current depth of the recursion back one level
+		if end_check == 'X':
+			self.current_depth -=1
+			return (-99999, x, y)
+		elif end_check == 'O':
+			self.current_depth -=1
+			return (99999, x, y)
+		elif end_check == '.':
+			self.current_depth -=1
 			return (0, x, y)
-		for i in range(0, 3):
-			for j in range(0, 3):
+
+		# If we've reached the depth limit, evaluate this leaf node
+		if self.current_depth > depth_limit:
+			self.current_depth -= 1
+			#Choose the heuristic here
+			#result = self.possible_win_paths()
+			result = self.weighted_possible_win_paths()
+			return (result, x, y)
+
+		# Iterate through the board to test all possible moves
+		for i in range(self.gp.size_of_board):
+			for j in range(self.gp.size_of_board):
 				if self.current_state[i][j] == '.':
-					if max:
+					if max and self.current_depth <= depth_limit:
 						self.current_state[i][j] = 'O'
 						(v, _, _) = self.alphabeta(alpha, beta, max=False)
 						if v > value:
 							value = v
 							x = i
 							y = j
-					else:
+					elif max is False and self.current_depth <= depth_limit:
 						self.current_state[i][j] = 'X'
 						(v, _, _) = self.alphabeta(alpha, beta, max=True)
 						if v < value:
@@ -473,12 +519,12 @@ class Game:
 							x = i
 							y = j
 					self.current_state[i][j] = '.'
-					if max:
+					if max and self.current_depth <= depth_limit:
 						if value >= beta:
 							return (value, x, y)
 						if value > alpha:
 							alpha = value
-					else:
+					elif max is False and self.current_depth <= depth_limit:
 						if value <= alpha:
 							return (value, x, y)
 						if value < beta:
@@ -516,9 +562,10 @@ class Game:
 	
 	def play(self):
 		list_of_chars = [string.ascii_uppercase[i] for i in range(self.gp.size_of_board)]
+		minimax_alphabeta_boolean_local = self.gp.minimax_alphabeta_bool
 		while True:
 			file_name = "gameTrace-" + str(self.gp.size_of_board) + str(len(self.gp.blocs_coordinates)) + str(self.gp.line_up_size) + str(self.gp.threshold) + '.txt'
-			with open(file_name , "a") as myfile:
+			with open(file_name, "a") as myfile:
 				myfile.write(self.draw_board() + '\n\n')
 			print(self.draw_board())
 			if self.check_end():
@@ -534,15 +581,20 @@ class Game:
 			self.states_depth = {}
 			self.nb_of_evaluated_states = 0 
 			self.current_depth = 0
-			if self.gp.minimax_alphabeta_bool == self.MINIMAX:
+			#if self.gp.minimax_alphabeta_bool == self.MINIMAX:
+			if 1 == self.MINIMAX:
 				if self.player_turn == 'X':
+					print("X using minimax")
 					(_, x, y) = self.minimax(max=False)
 				else:
+					print("O using minimax")
 					(_, x, y) = self.minimax(max=True)
-			else: # algo == self.ALPHABETA
+			else:
 				if self.player_turn == 'X':
+					print("X using alphabeta")
 					(m, x, y) = self.alphabeta(max=False)
 				else:
+					print("0 using alphabeta")
 					(m, x, y) = self.alphabeta(max=True)
 			end = time.time()
 			self.total_evaluated_time.append(round(end - self.start, 7))

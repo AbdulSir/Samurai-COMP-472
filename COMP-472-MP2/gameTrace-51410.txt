@@ -739,3 +739,100 @@ ii	Heuristic evaluations: 476
 3|X . O . O 
 4|. O . O . 
 
+n=5 b=1 s=4 t=10
+blocs= [(1, 1)]
+
+Player 1:AI d=5 a=False e1(Possible win paths)
+Player 2:AI d=5 a=False e1(Possible win paths)
+
+  A B C D E
+0|. . . . . 
+1|. * . . . 
+2|. . . . . 
+3|. . . . . 
+4|. . . . . 
+
+Player X under AI control plays: x = 2, y = C
+
+i 	Evaluation time: 0.072998s
+ii 	Heuristic evaluations: 3066
+iii	Evaluations by depth: {0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5: 3051}
+iv 	Average evaluation depth: 4.99
+
+  A B C D E
+0|. . . . . 
+1|. * . . . 
+2|. . X . . 
+3|. . . . . 
+4|. . . . . 
+
+Player O under AI control plays: x = 2, y = D
+
+i 	Evaluation time: 0.069s
+ii 	Heuristic evaluations: 2921
+iii	Evaluations by depth: {0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5: 2906}
+iv 	Average evaluation depth: 4.99
+
+  A B C D E
+0|. . . . . 
+1|. * . . . 
+2|. . X O . 
+3|. . . . . 
+4|. . . . . 
+
+Player X under AI control plays: x = 3, y = C
+
+i 	Evaluation time: 0.030998s
+ii 	Heuristic evaluations: 2776
+iii	Evaluations by depth: {0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5: 2761}
+iv 	Average evaluation depth: 4.99
+
+  A B C D E
+0|. . . . . 
+1|. * . . . 
+2|. . X O . 
+3|. . X . . 
+4|. . . . . 
+
+Player O under AI control plays: x = 3, y = A
+
+i 	Evaluation time: 0.0259998s
+ii 	Heuristic evaluations: 2631
+iii	Evaluations by depth: {0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5: 2616}
+iv 	Average evaluation depth: 4.99
+
+  A B C D E
+0|. . . . . 
+1|. * . . . 
+2|. . X O . 
+3|O . X . . 
+4|. . . . . 
+
+Player X under AI control plays: x = 0, y = D
+
+i 	Evaluation time: 0.013s
+ii 	Heuristic evaluations: 2925
+iii	Evaluations by depth: {0: 1, 1: 2, 2: 3, 3: 4, 4: 65, 5: 2850}
+iv 	Average evaluation depth: 4.97
+
+  A B C D E
+0|. . . X . 
+1|. * . . . 
+2|. . X O . 
+3|O . X . . 
+4|. . . . . 
+
+Player O under AI control plays: x = 3, y = E
+
+i 	Evaluation time: 0.0080009s
+ii 	Heuristic evaluations: 2341
+iii	Evaluations by depth: {0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5: 2326}
+iv 	Average evaluation depth: 4.99
+
+  A B C D E
+0|. . . X . 
+1|. * . . . 
+2|. . X O . 
+3|O . X . O 
+4|. . . . . 
+
