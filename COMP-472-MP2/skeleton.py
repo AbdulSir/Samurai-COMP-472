@@ -17,7 +17,9 @@ class Game:
 	# current_depth_min = 0
 	nb_of_evaluated_states = 0
 	current_depth = 0
-	
+	states_depth = {}
+	average_depth_dict = {}
+
 	def __init__(self, recommend = True):
 		self.initialize_game()
 		self.recommend = recommend
@@ -254,6 +256,12 @@ class Game:
 		# 0  - a tie
 		# 1  - loss for 'X'
 		# We're initially setting it to 2 or -2 as worse than the worst case:
+		
+		if self.current_depth not in self.average_depth_dict:
+			self.average_depth_dict[self.current_depth] = 1
+		else:
+			self.average_depth_dict[self.current_depth] += 1
+
 		if self.player_turn == 'O':
 			depth_limit = self.d2
 		else:
@@ -272,9 +280,9 @@ class Game:
 		if max:
 			value = -100000
 
-		self.current_depth += 1
-
 		end_check = self.is_end()
+		self.nb_of_evaluated_states += 1
+		self.states_depth[self.current_depth] = self.nb_of_evaluated_states
 		if end_check == 'X':
 			self.current_depth -=1
 			return (-99999, x, y)
@@ -285,6 +293,7 @@ class Game:
 			self.current_depth -=1
 			return (0, x, y)
 
+		self.current_depth += 1
 		# check for the self.current_depth
 		if self.current_depth > depth_limit:
 			self.current_depth -= 1
@@ -367,6 +376,21 @@ class Game:
 							beta = value
 		return (value, x, y)
 
+	def average_depth(self):
+		total = 0
+		avg = 0
+		for key in self.states_depth:
+			total += self.states_depth[key]
+			for i in range(self.states_depth[key]):
+				avg += key
+		return round(avg/total, 2)
+	
+	def evaluated_states(self):
+		total = 0
+		for key in self.states_depth:
+			total += self.states_depth[key]
+		return total
+
 	def play(self):
 		list_of_chars = [string.ascii_uppercase[i] for i in range(self.gp.size_of_board)]
 		while True:
@@ -377,6 +401,7 @@ class Game:
 			if self.check_end():
 				return
 			self.start = time.time()
+			self.states_depth = {}
 			self.nb_of_evaluated_states = 0 
 			self.current_depth = 0
 			if self.gp.minimax_alphabeta_bool == self.MINIMAX:
@@ -393,8 +418,10 @@ class Game:
 			if (self.player_turn == 'X' and self.mode_of_play()[0] == self.HUMAN) or (self.player_turn == 'O' and self.mode_of_play()[1] == self.HUMAN):
 					if self.recommend:
 						with open(file_name, "a") as myfile:
-							myfile.write(F'\ni\tEvaluation time: {round(end - self.start, 7)}s')
-							myfile.write(F'\nii\tHeuristic evaluations: {self.nb_of_evaluated_states}\n')
+							myfile.write(F'i\tEvaluation time: {round(end - self.start, 7)}s')
+							myfile.write(F'ii\tHeuristic evaluations: {self.evaluated_states()}\n')
+							myfile.write(F'iii\tEvaluations by depth: {str(self.states_depth)}\n')
+							myfile.write(F'iv\tAverage evaluation depth: {str(self.average_depth())}\n')
 							myfile.write(F'\nRecommended move: x = {x}, y = {list_of_chars[y]}')
 						print(F'Evaluation time: {round(end - self.start, 7)}s')
 						print(F'Recommended move: x = {x}, y = {list_of_chars[y]}')
@@ -402,10 +429,13 @@ class Game:
 			if (self.player_turn == 'X' and self.mode_of_play()[0] == self.AI) or (self.player_turn == 'O' and self.mode_of_play()[1] == self.AI):
 						with open(file_name, "a") as myfile:
 							myfile.write(F'Player {self.player_turn} under AI control plays: x = {x}, y = {list_of_chars[y]}\n\n')
-							myfile.write(F'\ni\tEvaluation time: {round(end - self.start, 7)}s\n')
-							myfile.write(F'\nii\tHeuristic evaluations: {self.nb_of_evaluated_states}\n')
+							myfile.write(F'i\tEvaluation time: {round(end - self.start, 7)}s\n')
+							myfile.write(F'ii\tHeuristic evaluations: {self.evaluated_states()}\n')
+							myfile.write(F'iii\tEvaluations by depth: {str(self.states_depth)}\n')
+							myfile.write(F'iv\tAverage evaluation depth: {str(self.average_depth())}\n')
 						print(F'Evaluation time: {round(end - self.start, 7)}s')
 						print(F'Player {self.player_turn} under AI control plays: x = {x}, y = {list_of_chars[y]}')
 			self.current_state[x][y] = self.player_turn
 			self.switch_player()
+			self.average_depth_dict = {}
 
