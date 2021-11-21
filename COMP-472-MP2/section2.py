@@ -6,7 +6,8 @@ class Game_Parameter:
     size_of_board = num_of_blocs = position_of_blocs = line_up_size = max_depth_d1 = max_depth_d2 = threshold = 0
     blocs_x_coord = blocs_y_coord = 0
     blocs_coordinates = []
-    minimax_alphabeta_bool = False #default minimax (False) - Alphabeta (True)
+    minimax_alphabeta_bool = 0 #default minimax (False) - Alphabeta (True)
+    heuristic_chosen_p1 = heuristic_chosen_p2 = 0 #0 defaulting to e1 (possible win paths)
     play_modes = ""
     board = []
 
@@ -62,8 +63,9 @@ class Game_Parameter:
         print(self.line_up_size)
 
         self.max_depth_d1 = int(input("\nPlease enter the maximum depth of the adversarial search for player 1:\n"))
+        self.heuristic_chosen_p1 = int(input("\nPlease choose the heurisitc to use for player 1: (e1=0, e2=1)\n"))
         self.max_depth_d2 = int(input("\nPlease enter the maximum depth of the adversarial search for player 2:\n"))
-
+        self.heuristic_chosen_p2 = int(input("\nPlease choose the heurisitc to use for player 2: (e1=0, e2=1)\n"))
         self.threshold = int(input("\nPlease enter the maximum allowed time (in seconds) for the program to return a move:\n"))
 
         search_algo = input("\nPlease enter the desired search algorithm (minimax OR alphabeta):\n")
@@ -72,11 +74,11 @@ class Game_Parameter:
             search_algo = input("\nPlease enter the desired search algorithm (minimax OR alphabeta):\n")
 
         if search_algo == 'minimax':
-            minimax_alphabeta_bool = 0
+            self.minimax_alphabeta_bool = 0
         else:
-            minimax_alphabeta_bool = 1
+            self.minimax_alphabeta_bool = 1
 
-        print (minimax_alphabeta_bool)
+        print(self.minimax_alphabeta_bool)
 
         self.play_modes = input("Please enter the play modes (i.e. H-H, H-AI, AI-H, AI-AI):\n")
         while (self.play_modes.lower() != "h-h") and (self.play_modes.lower() != "h-ai") and (self.play_modes.lower() != "ai-h") and (self.play_modes.lower() != "ai-ai"):
@@ -85,7 +87,7 @@ class Game_Parameter:
 
         print(self.play_modes)
 
-    # Attempting to pring the board
+    # Attempting to print the board
     def init_board(self):
         for i in range(self.size_of_board):
             row = []
