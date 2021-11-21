@@ -374,10 +374,10 @@ class Game:
 
 		if self.player_turn == 'O':
 			depth_limit = self.d2
-			chosen_heuristic = self.gp.heuristic_chosen_p1
+			chosen_heuristic = self.gp.heuristic_chosen_p2
 		else:
 			depth_limit = self.d1
-			chosen_heuristic = self.gp.heuristic_chosen_p2
+			chosen_heuristic = self.gp.heuristic_chosen_p1
 
 
 		x = y = None
@@ -460,10 +460,10 @@ class Game:
 		# Set the depth limit for this call, given the player's turn
 		if self.player_turn == 'O':
 			depth_limit = self.d2
-			chosen_heuristic = self.gp.heuristic_chosen_p1
+			chosen_heuristic = self.gp.heuristic_chosen_p2
 		else:
 			depth_limit = self.d1
-			chosen_heuristic = self.gp.heuristic_chosen_p2
+			chosen_heuristic = self.gp.heuristic_chosen_p1
 
 		# Initialize the X and Y coordinates for the optimal move
 		x = y = None

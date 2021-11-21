@@ -1,25 +1,15 @@
-n=4 b=4 s=3 t=5Player 1:AI d=6 a=False e1(Possible win paths)
-Player 2:AI d=6 a=False e1(Possible win paths)
+n=5 b=3 s=3 t=5
 
-20 games
+Player 1: d=7 a=False
+Player 2: d=5 a=False
 
-n=4 b=4 s=3 t=1Player 1:AI d=6 a=True e1(Possible win paths)
-Player 2:AI d=6 a=True e1(Possible win paths)
+6 games
 
-20 games
+Total wins for heuristic e1: 3 (0.0%) (Possible win paths)
+Total wins for heuristic e2: 1 (100.0%) (Weighted possible win paths)
 
-n=5 b=4 s=4 t=1Player 1:AI d=2 a=True e1(Possible win paths)
-Player 2:AI d=6 a=True e1(Possible win paths)
-
-20 games
-
-n=5 b=4 s=4 t=5Player 1:AI d=6 a=True e1(Possible win paths)
-Player 2:AI d=6 a=True e1(Possible win paths)
-
-20 games
-
-n=8 b=5 s=5 t=1Player 1:AI d=6 a=True e1(Possible win paths)
-Player 2:AI d=6 a=True e1(Possible win paths)
-
-20 games
-
+i   Average evaluation time: 0.02s
+ii  Total heuristic evaluations: 212073
+iii Evaluations by depth: {0: 45, 1: 156, 2: 135, 3: 180, 4: 228, 5: 80994, 6: 171, 7: 114783}
+iv  Average evaluation depth: 50.38
+v  Average moves per game: 8.5
