@@ -18,3 +18,12 @@ https://github.com/AdrienKamran/Samurai-COMP-472
   <li>Esnure that a directory called "distributions" is included in the same directory as task2.ipynb</li>
   <li>Run all of the cells, in sequence</li>
 </ul>
+
+<h1> Mini-Project 2 </h1>
+<h2> Instructions to Run the Game of Line 'em Up </h2>
+<ul>   
+  <li>Clone the project </li>
+  <li>Navigated to COMP-472-MP2 directory </li>
+  <li>Ensure you have python 3.8.1 and PyPy 7.3.7 installed</li>
+  <li>Run main.py file</li>
+</ul>
