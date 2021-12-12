@@ -1,10 +1,6 @@
 import gensim.downloader as api
 import random
 import csv
-from gensim.models import Word2Vec
-from gensim.similarities import Similarity
-
-import inspect
 
 def main():
     # Push all the 5 words into a list
@@ -18,6 +14,7 @@ def main():
     possible_answers = ['a','b','c','d']
     label = ''
 
+    #Load the corpus
     wv = api.load('word2vec-google-news-300')
 
     # loading the synonyms file with open()
