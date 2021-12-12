@@ -35,11 +35,11 @@ def main():
         temp = line.split('\t')
         if len(temp) > 1:
             #question + 4 options
-            print(temp[1].split('\n')[0])
             list_of_words.append(temp[1].split('\n')[0])
         else:
             #Actual answer
             answer = temp[0].split('\n')[0]
+            #Store the question_word
             question_word = list_of_words[0]
             for i in range(len(list_of_words)):
                 if i>0: #start at index 1
@@ -69,9 +69,41 @@ def main():
             #When an answer is found, reset the list_of_words array and start filling it for the new question
             list_of_words = []
             list_of_similarity_score = []
-            
+
     myfile.close()
     f.close()
 
+    #Question 2 > Generating analysis.csv file
+
+    # open the 'analysis.csv' file in the write mode
+    analysis_file = open('analysis.csv', 'w', newline='')
+    # open the 'word2vec-google-news-300-details.csv' file
+    details_file = open('word2vec-google-news-300-details.csv')
+    # create the csv reader
+    csv_reader = csv.reader(details_file, delimiter=',')
+    #Start reading the file and calculating stats
+    line_count = 0
+    correct_label_ctr = 0 #C
+    not_guess_label_ctr = 0 #V
+    for row in csv_reader:
+        if line_count == 0:
+            line_count += 1
+        else:
+            if row[3] == 'correct':
+                correct_label_ctr +=1
+            if row[3] != 'guess':
+                not_guess_label_ctr +=1
+            line_count += 1
+    accuracy = correct_label_ctr/not_guess_label_ctr
+    # create the csv writer
+    writer = csv.writer(analysis_file)
+    # write the header row to the csv file
+    data = ['word2vec-google-news-300', '3000000', correct_label_ctr, not_guess_label_ctr, accuracy]
+    writer.writerow(data)
+    
+    #Close files after processing
+    analysis_file.close()
+    details_file.close()
+    
 if __name__ == "__main__":
     main()
