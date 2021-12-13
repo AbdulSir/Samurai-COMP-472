@@ -6,7 +6,7 @@ def main():
     # Push all the 5 words into a list
     # iterate thru the list, compare list[0] with list[0+i]
     # Store the values of similarity in an array, call max(arr_of_similiar) len(arr) = 4 > 0,1,2,3
-    # find the index of the of the value which max returned > e.g. 2
+    # find the index of the value which max returned > e.g. 2
     # compare that to the [a,b,c,d] array. 
 
     list_of_words = []
