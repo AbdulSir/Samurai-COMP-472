@@ -1,0 +1,5 @@
+word2vec-google-news-300,3000000,70,79,0.8860759494
+fasttext-wiki-news-subwords-300,999999,73,80,0.9125
+glove-wiki-gigaword-300,400000,71,80,0.8875
+glove-twitter-100,1193514,38,78,0.4871794872
+glove-twitter-200,1193514,44,78,0.5641025641
