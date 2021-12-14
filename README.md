@@ -1,5 +1,6 @@
 https://github.com/AdrienKamran/Samurai-COMP-472
 # Samurai-COMP-472
+Adrien Kamran (40095393) and Abdul Sirawan (40074202)
 
 <h1> Mini-Project 1 </h1>
 <h2> Instructions to Run Task 1 </h2>
