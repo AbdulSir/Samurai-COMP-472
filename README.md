@@ -32,7 +32,14 @@ https://github.com/AdrienKamran/Samurai-COMP-472
 <h2> Instructions to Run Task 1 </h2>
 <ul> 
   <li>Clone the project </li>
-  <li>Clone the project </li>
   <li>Install gensim lib using the following command "pip install --upgrade gensim" </li>
-  <li>Run main.py file</li>
+  <li>Navigate to the COMP472-MP3-T1 directory</li>
+  <li>Ensure that synonyms.txt is within the same directory as the main.py file</li>
+  <li>Run the main.py file </li>
+</ul>
+<h2> Instructions to Run Task 2 </h2>
+<ul> 
+  <li>Navigate to the COMP472-MP3-T2 directory</li>
+  <li>Ensure that synonyms.txt is within the same directory as the main.py file</li>
+  <li>Run the main.py file</li>
 </ul>
