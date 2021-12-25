@@ -3,6 +3,10 @@ https://github.com/AdrienKamran/Samurai-COMP-472
 Adrien Kamran (40095393) and Abdul Sirawan (40074202)
 
 <h1> Mini-Project 1 </h1>
+<h2> Project Description </h2>
+<p>A text classification task to better understand the Multinomial Naive Bayes classifier,
+and another classification with a variety of types of features to better appreciate how to work with other types
+of data and machine learning models. For further details, open COMP472-MP1/MP1 Project Instruction </p>
 <h2> Instructions to Run Task 1 </h2>
 <ul> 
   <li>Enter the COMP472-MP1-T1 directory</li>
@@ -21,6 +25,9 @@ Adrien Kamran (40095393) and Abdul Sirawan (40074202)
 </ul>
 
 <h1> Mini-Project 2 </h1>
+<h2> Project Description </h2>
+<p>Developing the Game of Line 'em Up which is a generic version of tic-tac-toe: it is an adversarial 2 player game played on a n×n
+board. The goal of this project is to develop 2 different heuristics that perform an adversial search on the game tree. For further details, open COMP472-MP2/MP2 Project Instruction </p>
 <h2> Instructions to Run the Game of Line 'em Up </h2>
 <ul>   
   <li>Clone the project </li>
@@ -30,6 +37,10 @@ Adrien Kamran (40095393) and Abdul Sirawan (40074202)
 </ul>
 
 <h1> Mini-Project 3 </h1>
+<h2> Project Description </h2>
+<p>In this project, we experiment with word embeddings to solve a Synonym test automatically and see if
+our program does better than humans! We then compare the performance of different models on different
+data sets and analyse these results to draw insight. For further details, open COMP472-MP3/MP3 Project Instruction </p>
 <li>Clone the project </li>
 <li>Install gensim lib using the following command "pip install --upgrade gensim" </li>
 <h2> Instructions to Run Task 1 </h2>
